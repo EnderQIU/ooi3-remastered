@@ -58,6 +58,7 @@ def main():
     app.router.add_route('GET', '/poi', frontend.poi)
     app.router.add_route('GET', '/connector', frontend.connector)
     app.router.add_route('GET', '/logout', frontend.logout)
+    
     app.router.add_route('GET', '/kcsapi/{action:.+}', api.api)
     app.router.add_route('POST', '/kcsapi/{action:.+}', api.api)
     app.router.add_route('GET', '/kcs/resources/image/world/{server:.+}_{size:[lst]}.png', api.world_image)

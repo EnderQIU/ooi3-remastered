@@ -1,0 +1,10 @@
+.idea
+__pycache__/
+_kcs/
+_kcs2/
+venv/
+/bin/
+/lib/
+/lib64
+/pip-selfcheck.json
+/pyvenv.cfg

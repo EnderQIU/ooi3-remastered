@@ -1,7 +1,6 @@
 """OOI3: Online Objects Integration version 3.0"""
 
 import argparse
-import asyncio
 
 import jinja2
 import aiohttp.web
@@ -14,11 +13,13 @@ from handlers.api import APIHandler
 from handlers.frontend import FrontEndHandler
 from handlers.service import ServiceHandler
 
-parser = argparse.ArgumentParser(description='Online Objects Integration version 3.0')
+parser = argparse.ArgumentParser(description='Online Objects Integration version 3.0 Remastered')
 parser.add_argument('-H', '--host', default='127.0.0.1',
                     help='The host of OOI server')
 parser.add_argument('-p', '--port', type=int, default=9999,
                     help='The port of OOI server')
+parser.add_argument('-D', '--debug', type=bool, default=False,
+                    help='Enable Debug Mode of OOI Server')
 
 
 def main():
@@ -31,9 +32,7 @@ def main():
     args = parser.parse_args()
     host = args.host
     port = args.port
-
-    # 初始化事件循环
-    loop = asyncio.get_event_loop()
+    debug = args.debug
 
     # 初始化请求处理器
     api = APIHandler()
@@ -44,7 +43,7 @@ def main():
     middlewares = [session_middleware(EncryptedCookieStorage(config.secret_key)), ]
 
     # 初始化应用
-    app = aiohttp.web.Application(middlewares=middlewares, loop=loop)
+    app = aiohttp.web.Application(middlewares=middlewares, debug=debug)
 
     # 定义Jinja2模板位置
     aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader(config.template_dir))
@@ -69,21 +68,10 @@ def main():
     app.router.add_static('/_kcs2', config.kcs2_dir)
     app.router.add_static('/kcs', config.kcs_dir)
     app.router.add_static('/_kcs', config.kcs_dir)
-    app_handlers = app.make_handler()
 
-    # 启动OOI服务器
-    server = loop.run_until_complete(loop.create_server(app_handlers, host, port))
-    print('OOI serving on http://%s:%d' % server.sockets[0].getsockname())
-    try:
-        loop.run_forever()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        loop.run_until_complete(app_handlers.finish_connections(1.0))
-        server.close()
-        loop.run_until_complete(server.wait_closed())
-        loop.run_until_complete(app.cleanup())
-    loop.close()
+    # 启动 aiohttp server
+    aiohttp.web.run_app(app, host=host, port=port)
+
 
 if __name__ == '__main__':
     main()

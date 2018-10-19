@@ -1,7 +1,7 @@
 .idea
 __pycache__/
-_kcs/
-_kcs2/
+_kcs/*
+_kcs2/*
 venv/
 /bin/
 /lib/

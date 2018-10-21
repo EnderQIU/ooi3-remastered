@@ -268,9 +268,9 @@ class KancolleAuth:
 
         :return: str
         """
-        yield from self._get_dmm_tokens()
-        yield from self._get_ajax_token()
-        yield from self._get_osapi_url()
+        self._get_dmm_tokens()
+        self._get_ajax_token()
+        self._get_osapi_url()
         return self.osapi_url
 
     def get_entry(self):
@@ -278,7 +278,7 @@ class KancolleAuth:
 
         :return: str
         """
-        yield from self.get_osapi()
-        yield from self._get_world()
-        yield from self._get_api_token()
+        self.get_osapi()
+        self._get_world()
+        self._get_api_token()
         return self.entry

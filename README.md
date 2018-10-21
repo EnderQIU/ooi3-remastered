@@ -3,9 +3,7 @@ Online Objects Integration (OOI) system based on aiohttp.
 
 Updated various of python packages. Remastered cdn cache method.
 
-本系统要求Python版本**必须**大于等于3.5.3，利用最新的aiohttp库()来实现OOI系统，以期望获得更高的效率。
-
-本系统在 kancolle.py 中进行登录时换用 requests 库，在进行登录时并发效率较低。
+This system requires the Python version >=3.5.3 for using the newest aiohttp in order to achieve the best efficiency。
 
 ## Trouble Shooter
 1. Q: Got shucked when executing `pip install -r requirements.txt` on macOS?

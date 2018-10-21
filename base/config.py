@@ -1,8 +1,13 @@
 import os
 
-
 # Cookie的secret key
 secret_key = os.environ.get('OOI_SECRET_KEY', 'You Must Set A Secret Key!').encode()
+
+# Proxies
+proxies = {
+    'http': os.environ.get('HTTP_PROXY'),
+    'https': os.environ.get('HTTPS_PROXY'),
+}
 
 # 项目目录
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

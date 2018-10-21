@@ -77,11 +77,11 @@ class APIHandler:
                 referrer = referrer.replace(request.host, world_ip)
                 referrer = referrer.replace('https://', 'http://')
                 url = 'http://' + world_ip + '/kcsapi/' + action
-                headers = aiohttp.MultiDict({
+                headers = {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko',
                     'Origin': 'http://' + world_ip + '/',
                     'Referer': referrer,
-                })
+                }
                 data = yield from request.post()
                 coro = aiohttp.ClientRequest(url=url, method='POST', data=data, headers=headers, proxy=self.proxy)
                 try:

@@ -1,0 +1,1 @@
+git pull && chown -R www-data:www-data ./ && supervisorctl restart ooi3

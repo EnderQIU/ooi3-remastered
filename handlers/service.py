@@ -26,7 +26,7 @@ class ServiceHandler:
         login_id = data.get('login_id', None)
         password = data.get('password', None)
         if login_id and password:
-            headers = aiohttp.MultiDict({'Content-Type': 'application/json'})
+            headers = {'Content-Type': 'application/json'}
             kancolle = KancolleAuth(login_id, password)
             try:
                 osapi_url = kancolle.get_osapi()
@@ -51,7 +51,7 @@ class ServiceHandler:
         login_id = data.get('login_id', None)
         password = data.get('password', None)
         if login_id and password:
-            headers = aiohttp.MultiDict({'Content-Type': 'application/json'})
+            headers = {'Content-Type': 'application/json'}
             kancolle = KancolleAuth(login_id, password)
             try:
                 entry_url = kancolle.get_entry()

@@ -2,11 +2,8 @@
 
 import argparse
 
-import jinja2
-import aiohttp.web
-import aiohttp_jinja2
-from aiohttp_session import session_middleware
-from aiohttp_session.cookie_storage import EncryptedCookieStorage
+import tornado.ioloop
+import tornado.web
 
 from base import config
 from handlers.api import APIHandler
@@ -43,7 +40,9 @@ def main():
     middlewares = [session_middleware(EncryptedCookieStorage(config.secret_key)), ]
 
     # 初始化应用
-    app = aiohttp.web.Application(middlewares=middlewares, debug=debug)
+    app = tornado.web.Application(
+        (r'/', frontend, ),
+    )
 
     # 定义Jinja2模板位置
     aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader(config.template_dir))

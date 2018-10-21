@@ -3,9 +3,6 @@
 """
 
 import asyncio
-import aiohttp.web
-import aiohttp_jinja2
-from aiohttp_session import get_session
 
 from auth.kancolle import KancolleAuth, OOIAuthException
 
@@ -22,9 +19,7 @@ class FrontEndHandler:
         if 'world_ip' in session:
             del session['world_ip']
 
-    @aiohttp_jinja2.template('form.html')
-    @asyncio.coroutine
-    def form(self, request):
+    def get(self, request):
         """展示登录表单。
 
         :param request: aiohttp.web.Request
@@ -39,8 +34,7 @@ class FrontEndHandler:
 
         return {'mode': mode}
 
-    @asyncio.coroutine
-    def login(self, request):
+    def post(self, request):
         """接受登录表单提交的数据，登录后跳转或登录失败后展示错误信息。
 
         :param request: aiohttp.web.Request
@@ -87,7 +81,6 @@ class FrontEndHandler:
             context = {'errmsg': '请输入完整的登录ID和密码', 'mode': mode}
             return aiohttp_jinja2.render_template('form.html', request, context)
 
-    @asyncio.coroutine
     def normal(self, request):
         """适配浏览器中进行游戏的页面，该页面会检查会话中是否有api_token、api_starttime和world_ip三个参数，缺少其中任意一个都不能进行
         游戏，跳转回登录页面。
@@ -109,7 +102,6 @@ class FrontEndHandler:
             FrontEndHandler.clear_session(session)
             return aiohttp.web.HTTPFound('/')
 
-    @asyncio.coroutine
     def kcv(self, request):
         """适配KanColleViewer或者74EO中进行游戏的页面，提供一个iframe，在iframe中载入游戏FLASH。该页面会检查会话中是否有api_token、
         api_starttime和world_ip三个参数，缺少其中任意一个都不能进行游戏，跳转回登录页面。
@@ -127,7 +119,6 @@ class FrontEndHandler:
             FrontEndHandler.clear_session(session)
             return aiohttp.web.HTTPFound('/')
 
-    @asyncio.coroutine
     def flash(self, request):
         """适配KanColleViewer或者74EO中进行游戏的页面，展示，该页面会检查会话中是否有api_token、api_starttime和world_ip三个参数，
         缺少其中任意一个都不能进行游戏，跳转回登录页面。
@@ -149,7 +140,6 @@ class FrontEndHandler:
             FrontEndHandler.clear_session(session)
             return aiohttp.web.HTTPFound('/')
 
-    @asyncio.coroutine
     def poi(self, request):
         """适配poi中进行游戏的页面，显示FLASH。该页面会检查会话中是否有api_token、api_starttime和world_ip三个参数，缺少其中任意一个
         都不能进行游戏，跳转回登录页面。
@@ -171,7 +161,6 @@ class FrontEndHandler:
             FrontEndHandler.clear_session(session)
             return aiohttp.web.HTTPFound('/')
 
-    @asyncio.coroutine
     def connector(self, request):
         """适配登录器直连模式结果页面，提供osapi.dmm.com的链接。
 
@@ -187,7 +176,6 @@ class FrontEndHandler:
             FrontEndHandler.clear_session(session)
             return aiohttp.web.HTTPFound('/')
 
-    @asyncio.coroutine
     def logout(self, request):
         """ 注销已登录的用户。
         清除所有的session，返回首页。

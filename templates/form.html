@@ -24,7 +24,7 @@
           <span class="uk-form-label">Start in mode：</span>
           <p>
             <input type="radio" id="mode1" name="mode" value="1"{% if mode == 1 %} checked{% endif %}>
-            <label for="mode1">This browser</label>
+            <label for="mode1">Browser (Default)</label>
           </p>
           <p>
             <input type="radio" id="mode2" name="mode" value="2"{% if mode == 2 %} checked{% endif %}>
@@ -36,20 +36,20 @@
           </p>
           <p>
             <input type="radio" id="mode4" name="mode" value="4"{% if mode == 4 %} checked{% endif %}>
-            <label for="mode4">Direct link</label>
+            <label for="mode4">Direct link (when cache is outdated)</label>
           </p>
         </div>
         <div class="uk-form-row">
-          <button class="uk-button uk-button-primary uk-button-large">登录游戏</button>
+          <button class="uk-button uk-button-primary uk-button-large">Login</button>
         </div>
       </form>
     </div>
     <div id="ooi-announcement" class="uk-width-medium-3-5">
       <h2 class="uk-text-primary">NOTICE</h2>
-        <p>This site uses the OOI system. OOI (Online Objects Integration) is an online caching system for DMM web game <i>Kantai Collection (艦隊これくしょん -艦これ)</i></p>
-        <p>This site only support login with the origin DMM account，neither Google nor Facebook account is not supported.</p>
+        <p>This website uses the OOI system. OOI (Online Objects Integration) is an online caching system for DMM web game <i>Kantai Collection (艦隊これくしょん -艦これ)</i></p>
+        <p>This website only support login with the origin DMM account，neither Google nor Facebook account is not supported.</p>
         <p>This website does not store any user information and is not responsible for any consequences that may be caused by the services of this website.</p>
-        <p>The source code of this site was forked from <a href="https://github.com/acgx/ooi3" target="_blank">this repository </a>and is open sourced under the GPLv3 license.</p>
-        <p>The source code of this site is published in <a href="https://github.com/EnderQIU/ooi3-remastered" target="_blank">this repository </a>and is open sourced under the GPLv3 license.</p>
+        <p>The source code of this website was forked from <a href="https://github.com/acgx/ooi3" target="_blank">this repository </a>and is open sourced under the GPLv3 license.</p>
+        <p>The source code of this website is published in <a href="https://github.com/EnderQIU/ooi3-remastered" target="_blank">this repository </a>and is open sourced under the GPLv3 license.</p>
     </div>
 {%- endblock %}

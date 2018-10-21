@@ -7,6 +7,7 @@ import aiohttp
 import aiohttp.web
 import asyncio
 from aiohttp_session import get_session
+from yarl import URL
 
 
 class APIHandler:
@@ -46,7 +47,7 @@ class APIHandler:
             if image_name in self.worlds:
                 body = self.worlds[image_name]
             else:
-                url = 'http://203.104.209.102/kcs/resources/image/world/' + image_name + '.png'
+                url = URL('http://203.104.209.102/kcs/resources/image/world/' + image_name + '.png')
                 coro = aiohttp.ClientRequest(url=url, method='GET', proxy=self.proxy)
                 try:
                     response = yield from asyncio.wait_for(coro, timeout=5)
@@ -76,7 +77,7 @@ class APIHandler:
                 referrer = request.headers.get('REFERER')
                 referrer = referrer.replace(request.host, world_ip)
                 referrer = referrer.replace('https://', 'http://')
-                url = 'http://' + world_ip + '/kcsapi/' + action
+                url = URL('http://' + world_ip + '/kcsapi/' + action)
                 headers = {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko',
                     'Origin': 'http://' + world_ip + '/',

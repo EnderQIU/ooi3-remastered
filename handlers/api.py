@@ -1,27 +1,29 @@
 """转发客户端FLASH和游戏服务器之间的通信。
 接受客户端FLASH发送到OOI3服务器的请求，将其转发给用户所在的游戏服务器，获得响应后再返回给客户端FLASH。
 """
+import os
 
 import aiohttp
 import aiohttp.web
 import asyncio
 from aiohttp_session import get_session
 
-from base import config
-
 
 class APIHandler:
     """ OOI3中用于转发客户端FLASH和游戏服务器间通信的类。"""
 
     def __init__(self):
-        """ 构造函数，根据环境变量初始化代理服务器。
+        """ 构造函数
 
         :return: none
         """
-        if config.proxy:
-            self.connector = aiohttp.ProxyConnector(proxy=config.proxy, force_close=False)
+        proxy = os.environ.get('HTTP_PROXY')
+        if proxy is None:
+            proxy = os.environ.get('HTTPS_PROXY')
+        if proxy:
+            self.proxy = proxy
         else:
-            self.connector = None
+            self.proxy = None
 
         # 初始化存放镇守府图片和api_start2内容的变量
         self.api_start2 = None
@@ -45,7 +47,7 @@ class APIHandler:
                 body = self.worlds[image_name]
             else:
                 url = 'http://203.104.209.102/kcs/resources/image/world/' + image_name + '.png'
-                coro = aiohttp.get(url, connector=self.connector)
+                coro = aiohttp.ClientRequest(url=url, method='GET', proxy=self.proxy)
                 try:
                     response = yield from asyncio.wait_for(coro, timeout=5)
                 except asyncio.TimeoutError:
@@ -69,7 +71,7 @@ class APIHandler:
         if world_ip:
             if action == 'api_start2' and self.api_start2 is not None:
                 return aiohttp.web.Response(body=self.api_start2,
-                                            headers=aiohttp.MultiDict({'Content-Type': 'text/plain'}))
+                                            headers={'Content-Type': 'text/plain'})
             else:
                 referrer = request.headers.get('REFERER')
                 referrer = referrer.replace(request.host, world_ip)
@@ -81,7 +83,7 @@ class APIHandler:
                     'Referer': referrer,
                 })
                 data = yield from request.post()
-                coro = aiohttp.post(url, data=data, headers=headers, connector=self.connector)
+                coro = aiohttp.ClientRequest(url=url, method='POST', data=data, headers=headers, proxy=self.proxy)
                 try:
                     response = yield from asyncio.wait_for(coro, timeout=5)
                 except asyncio.TimeoutError:
@@ -89,6 +91,6 @@ class APIHandler:
                 body = yield from response.read()
                 if action == 'api_start2' and len(body) > 100000:
                     self.api_start2 = body
-                return aiohttp.web.Response(body=body, headers=aiohttp.MultiDict({'Content-Type': 'text/plain'}))
+                return aiohttp.web.Response(body=body, headers={'Content-Type': 'text/plain'})
         else:
             return aiohttp.web.HTTPBadRequest()

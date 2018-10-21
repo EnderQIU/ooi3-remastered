@@ -25,3 +25,6 @@ A: `chown -R www-data:www-data /srv/ooi3-remastered/`
 
 A: `export LC_ALL=C`
 
+5. Q: How to use proxy?
+
+A: Use environment variables: `HTTP_PROXY` or `HTTPS_PROXY` such as `export HTTP_PROXY="http://127.0.0.1:1087`.

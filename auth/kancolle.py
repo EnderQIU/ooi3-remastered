@@ -1,13 +1,12 @@
 """针对网页游戏《舰队collection》的认证类。"""
 
-import aiohttp
-import asyncio
+import requests
 import json
 import re
 import time
+import os
 from urllib.parse import urlparse, parse_qs
 
-from base import config
 from auth.exceptions import OOIAuthException
 
 
@@ -22,7 +21,13 @@ class KancolleAuth:
             'make_request': 'http://osapi.dmm.com/gadgets/makeRequest',
             'get_world': 'http://203.104.209.7/kcsapi/api_world/get_id/%s/1/%d',
             'get_entry': 'http://%s/kcsapi/api_auth_member/dmmlogin/%s/1/%d',
-            'entry': 'http://%s/kcs2/index.php?api_root=/kcsapi&voice_root=/kcs/sound&osapi_root=osapi.dmm.com&version=4.0.0.0&api_token=%s&api_starttime=%d'}
+            'entry': 'http://%s/kcs2/index.php'
+                     '?api_root=/kcsapi'
+                     '&voice_root=/kcs/sound'
+                     '&osapi_root=osapi.dmm.com'
+                     '&version=4.0.0.0'
+                     '&api_token=%s'
+                     '&api_starttime=%d'}
 
     # 各镇守府的IP列表
     world_ip_list = (
@@ -71,13 +76,16 @@ class KancolleAuth:
         self.login_id = login_id
         self.password = password
 
-        # 初始化aiohttp会话，如果设定了代理服务器，则通过代理服务器发起会话
-        if config.proxy:
-            self.connector = aiohttp.ProxyConnector(proxy=config.proxy, force_close=False)
-        else:
-            self.connector = None
-        self.session = aiohttp.ClientSession(connector=self.connector)
-        self.headers = {'User-Agent': self.user_agent}
+        # 初始化 requests 会话
+        self.session = requests.Session()
+        self.session.headers = {'User-Agent': self.user_agent}
+
+        # 读取 Proxy
+        proxies = {
+            'http': os.environ.get('HTTP_PROXY'),
+            'https': os.environ.get('HTTPS_PROXY'),
+        }
+        self.session.proxies = proxies
 
         # 初始化登录过程中所需的变量
         self.dmm_token = None
@@ -93,15 +101,14 @@ class KancolleAuth:
         self.entry = None
 
     def __del__(self):
-        """析构函数，用于关闭aiohttp的会话。
+        """析构函数，用于关闭 requests 的会话。
 
         :return: none
         """
         self.session.close()
 
-    @asyncio.coroutine
     def _request(self, url, method='GET', data=None, timeout_message='连接失败', timeout=10):
-        """使用asyncio.wait_for包装过的会话向远端服务器发起请求。
+        """使用 requests.get() 包装过的会话向远端服务器发起请求。
         `url`为请求的URL地址，`method`为请求的方法， `data`为发起POST请求时的数据，`timeout_message`为请求超时后抛出异常所带的信息，
         `timeout`为超时时间，单位为秒。
 
@@ -113,54 +120,54 @@ class KancolleAuth:
         :return: generator
         """
         try:
-            response = yield from asyncio.wait_for(self.session.request(method, url, data=data, headers=self.headers),
-                                                   timeout)
+            response = self.session.request(method=method,
+                                            url=url,
+                                            data=data,
+                                            timeout=timeout)
             return response
-        except asyncio.TimeoutError:
+        except requests.Timeout:
             raise OOIAuthException(timeout_message)
 
-    @asyncio.coroutine
     def _get_dmm_tokens(self):
         """解析DMM的登录页面，获取dmm_token和token，返回dmm_token和token的值。
 
         :return: tuple
         """
-        response = yield from self._request(self.urls['login'], method='GET', data=None,
-                                            timeout_message='连接DMM登录页失败')
-        html = yield from response.text()
+        response = self._request(self.urls['login'],
+                                 method='GET',
+                                 data=None,
+                                 timeout_message='连接DMM登录页失败')
+        html = response.text
 
         m = self.patterns['dmm_token'].search(html)
         if m:
             self.dmm_token = m.group(1)
         else:
-            raise OOIAuthException('获取DMM token失败')
+            raise OOIAuthException('获取DMM token失败，可能是未正确配置代理服务器？')
 
         m = self.patterns['token'].search(html)
         if m:
             self.token = m.group(1)
         else:
             raise OOIAuthException('获取token失败')
-        #print(str(self.dmm_token))
-        #print(str(self.token))
         return self.dmm_token, self.token
 
-    @asyncio.coroutine
     def _get_ajax_token(self):
         """根据在DMM登录页获得的dmm_token和token，发起一个AJAX请求，获取第二个token以及idKey和pwdKey。
 
         :return: tuple
         """
-        self.headers.update({'Origin': 'https://accounts.dmm.com',
-                             'Referer': self.urls['login'],
-                             'http-dmm-token': self.dmm_token,
-                             'X-Requested-With': 'XMLHttpRequest'})
+        self.session.headers.update({'Origin': 'https://accounts.dmm.com',
+                                     'Referer': self.urls['login'],
+                                     'http-dmm-token': self.dmm_token,
+                                     'X-Requested-With': 'XMLHttpRequest'})
         data = {'token': self.token}
-        response = yield from self._request(self.urls['ajax'], method='POST', data=data,
-                                       timeout_message='DMM登录页AJAX请求失败')
-        j = yield from response.json()
-		
-        #print(str(j))
-        #print(str(j['body']['token']))		
+        response = self._request(self.urls['ajax'],
+                                 method='POST',
+                                 data=data,
+                                 timeout_message='DMM登录页AJAX请求失败')
+        j = response.json()
+
         try:
             self.token = j['body']['token']
             self.idKey = j['body']['login_id']
@@ -169,29 +176,30 @@ class KancolleAuth:
             raise OOIAuthException('DMM修改登录机制了，请通知管理员处理')
         return self.token, self.idKey, self.pwdKey
 
-    @asyncio.coroutine
     def _get_osapi_url(self):
         """登录DMM账号，并转到《舰队collection》游戏页面，获取内嵌游戏网页的地址。
 
         :return: str
         """
-        del self.headers['http-dmm-token']
-        del self.headers['X-Requested-With']
+        del self.session.headers['http-dmm-token']
+        del self.session.headers['X-Requested-With']
         data = {'login_id': self.login_id,
                 'password': self.password,
                 'token': self.token,
                 'idKey': self.login_id,
                 'pwKey': self.password}
-        response = yield from self._request(self.urls['auth'], method='POST', data=data,
-                                       timeout_message='连接DMM认证网页失败')
-        html = yield from response.text()
+        response = self._request(self.urls['auth'],
+                                 method='POST',
+                                 data=data,
+                                 timeout_message='连接DMM认证网页失败')
+        html = response.text
         m = self.patterns['reset'].search(html)
         if m:
             raise OOIAuthException('DMM强制要求用户修改密码')
 
-        response = yield from self._request(self.urls['game'],
-                                       timeout_message='连接舰队collection游戏页面失败')
-        html = yield from response.text()
+        response = self._request(self.urls['game'],
+                                 timeout_message='连接舰队collection游戏页面失败')
+        html = response.text
         m = self.patterns['osapi'].search(html)
         if m:
             self.osapi_url = m.group(1)
@@ -200,7 +208,6 @@ class KancolleAuth:
 
         return self.osapi_url
 
-    @asyncio.coroutine
     def _get_world(self):
         """解析游戏内嵌网页地址，从DMM处获得用户所在服务器的ID和IP地址。
 
@@ -210,9 +217,9 @@ class KancolleAuth:
         self.owner = qs['owner'][0]
         self.st = qs['st'][0]
         url = self.urls['get_world'] % (self.owner, int(time.time()*1000))
-        self.headers['Referer'] = self.osapi_url
-        response = yield from self._request(url, timeout_message='调查提督所在镇守府失败')
-        html = yield from response.text()
+        self.session.headers['Referer'] = self.osapi_url
+        response = self._request(url, timeout_message='调查提督所在镇守府失败')
+        html = response.text
         svdata = json.loads(html[7:])
         if svdata['api_result'] == 1:
             self.world_id = svdata['api_data']['api_world_id']
@@ -222,7 +229,6 @@ class KancolleAuth:
 
         return self.world_id, self.world_ip, self.st
 
-    @asyncio.coroutine
     def _get_api_token(self):
         """根据用户所在服务器IP和用户自身的ID，从DMM处获得用户的api_token、api_starttim，并生成游戏FLASH的地址
 
@@ -240,9 +246,11 @@ class KancolleAuth:
                 'signViewer': 'true',
                 'gadget': 'http://203.104.209.7/gadget.xml',
                 'container': 'dmm'}
-        response = yield from self._request(self.urls['make_request'], method='POST', data=data,
-                                       timeout_message='调查提督进入镇守府的口令失败')
-        html = yield from response.text()
+        response = self._request(self.urls['make_request'],
+                                 method='POST',
+                                 data=data,
+                                 timeout_message='调查提督进入镇守府的口令失败')
+        html = response.text
         svdata = json.loads(html[27:])
         if svdata[url]['rc'] != 200:
             raise OOIAuthException('调查提督进入镇守府的口令失败')
@@ -255,7 +263,6 @@ class KancolleAuth:
 
         return self.api_token, self.api_starttime, self.entry
 
-    @asyncio.coroutine
     def get_osapi(self):
         """登录游戏，获取内嵌游戏网页地址并返回
 
@@ -266,7 +273,6 @@ class KancolleAuth:
         yield from self._get_osapi_url()
         return self.osapi_url
 
-    @asyncio.coroutine
     def get_entry(self):
         """登录游戏，获取游戏FLASH地址并返回
 

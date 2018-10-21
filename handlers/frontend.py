@@ -13,7 +13,8 @@ from auth.kancolle import KancolleAuth, OOIAuthException
 class FrontEndHandler:
     """OOI3前端请求处理类。"""
 
-    def clear_session(self, session):
+    @staticmethod
+    def clear_session(session):
         if 'api_token' in session:
             del session['api_token']
         if 'api_starttime' in session:
@@ -105,7 +106,7 @@ class FrontEndHandler:
                        'starttime': starttime}
             return aiohttp_jinja2.render_template('normal.html', request, context)
         else:
-            self.clear_session(session)
+            FrontEndHandler.clear_session(session)
             return aiohttp.web.HTTPFound('/')
 
     @asyncio.coroutine
@@ -123,7 +124,7 @@ class FrontEndHandler:
         if token and starttime and world_ip:
             return aiohttp_jinja2.render_template('kcv.html', request, context={})
         else:
-            self.clear_session(session)
+            FrontEndHandler.clear_session(session)
             return aiohttp.web.HTTPFound('/')
 
     @asyncio.coroutine
@@ -145,7 +146,7 @@ class FrontEndHandler:
                        'starttime': starttime}
             return aiohttp_jinja2.render_template('flash.html', request, context)
         else:
-            self.clear_session(session)
+            FrontEndHandler.clear_session(session)
             return aiohttp.web.HTTPFound('/')
 
     @asyncio.coroutine
@@ -167,7 +168,7 @@ class FrontEndHandler:
                        'starttime': starttime}
             return aiohttp_jinja2.render_template('poi.html', request, context)
         else:
-            self.clear_session(session)
+            FrontEndHandler.clear_session(session)
             return aiohttp.web.HTTPFound('/')
 
     @asyncio.coroutine
@@ -183,7 +184,7 @@ class FrontEndHandler:
             context = {'osapi_url': osapi_url}
             return aiohttp_jinja2.render_template('connector.html', request, context)
         else:
-            self.clear_session(session)
+            FrontEndHandler.clear_session(session)
             return aiohttp.web.HTTPFound('/')
 
     @asyncio.coroutine
@@ -194,5 +195,5 @@ class FrontEndHandler:
         :return: aiohttp.web.HTTPFound
         """
         session = yield from get_session(request)
-        self.clear_session(session)
+        FrontEndHandler.clear_session(session)
         return aiohttp.web.HTTPFound('/')

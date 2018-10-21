@@ -29,7 +29,7 @@ class ServiceHandler:
             headers = aiohttp.MultiDict({'Content-Type': 'application/json'})
             kancolle = KancolleAuth(login_id, password)
             try:
-                osapi_url = yield from kancolle.get_osapi()
+                osapi_url = kancolle.get_osapi()
                 result = {'status': 1,
                           'osapi_url': osapi_url}
             except OOIAuthException as e:
@@ -54,7 +54,7 @@ class ServiceHandler:
             headers = aiohttp.MultiDict({'Content-Type': 'application/json'})
             kancolle = KancolleAuth(login_id, password)
             try:
-                entry_url = yield from kancolle.get_entry()
+                entry_url = kancolle.get_entry()
                 result = {'status': 1,
                           'flash_url': entry_url}
             except OOIAuthException as e:

@@ -59,7 +59,7 @@ class FrontEndHandler:
             kancolle = KancolleAuth(login_id, password)
             if mode in (1, 2, 3):
                 try:
-                    yield from kancolle.get_entry()
+                    kancolle.get_entry()
                     session['api_token'] = kancolle.api_token
                     session['api_starttime'] = kancolle.api_starttime
                     session['world_ip'] = kancolle.world_ip
@@ -75,7 +75,7 @@ class FrontEndHandler:
                     return aiohttp_jinja2.render_template('form.html', request, context)
             elif mode == 4:
                 try:
-                    osapi_url = yield from kancolle.get_osapi()
+                    osapi_url = kancolle.get_osapi()
                     session['osapi_url'] = osapi_url
                     return aiohttp.web.HTTPFound('/connector')
                 except OOIAuthException as e:

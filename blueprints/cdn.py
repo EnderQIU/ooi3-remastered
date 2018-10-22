@@ -14,8 +14,6 @@ cdn_bp = Blueprint('cdn', __name__)
 def kcs2(static_path):
     url = config.upstream + 'kcs2/' + static_path
 
-    if len(request.args) > 0:
-        url += '?' + urlencode(request.args)
     method = request.method
     data = request.data or request.form or None
     headers = dict()
@@ -25,7 +23,7 @@ def kcs2(static_path):
         headers[name] = value
 
     try:
-        r = requests.request(method, url, headers=headers, data=data, stream=True)
+        r = requests.request(url=url, method=method, params=request.args, headers=headers, data=data, stream=True, timeout=5)
     except Timeout:
         return Response(status=403)
     resp_headers = []

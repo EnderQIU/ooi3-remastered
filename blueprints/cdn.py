@@ -20,6 +20,8 @@ def upload_file(key, data, mime_type='application/octet-stream'):
     :param mime_type:
     :return:
     """
+    from ooi import qiniu
+
     token = qiniu.upload_token(config.bucket_name, key, 30)
     ret, info = put_data(up_token=token,
                          key=key,

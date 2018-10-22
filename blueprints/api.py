@@ -45,7 +45,7 @@ def world_image(server, size):
 
 
 @api_bp.route('/kcsapi/<string:action>', methods=('GET', 'POST', ))
-def api(action):
+def kcsapi(action):
     """ 转发客户端和游戏服务器之间的API通信。
 
     :param request: aiohttp.web.Request

@@ -9,7 +9,7 @@ frontend_bp = Blueprint('frontend', __name__)
 
 
 @frontend_bp.route('/', methods=('GET',))
-def index():
+def form():
     """Display login form
 
     :return: rv
@@ -23,7 +23,7 @@ def index():
 
 
 @frontend_bp.route('/', methods=('POST',))
-def form():
+def login():
     """Login DMM from login form
 
     :return: rv
@@ -62,8 +62,8 @@ def form():
         return render_template('form.html', errmsg='Please input your username and password.', mode=mode)
 
 
-@frontend_bp.route('/normal', methods=('GET',))
-def normal():
+@frontend_bp.route('/kancolle', methods=('GET',))
+def kancolle():
     """适配浏览器中进行游戏的页面，该页面会检查会话中是否有api_token、api_starttime和world_ip三个参数，缺少其中任意一个都不能进行
     游戏，跳转回登录页面。
 

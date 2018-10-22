@@ -2,54 +2,63 @@
 
 {% block content -%}
     <div id="ooi-form" class="uk-width-medium-2-5">
-      {% if errmsg -%}
-      <div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-bottom">
-        <p class="uk-text-danger">{{ errmsg }}</p>
-      </div>
-      {%- endif %}
-      <form  method="post" class="uk-form uk-form-stacked">
-        <div class="uk-form-row">
-          <label class="uk-form-label" for="login_id">Email Address</label>
-          <div class="uk-form-controls">
-            <input id="login_id" maxlength="80" name="login_id" type="email" class="uk-form-large uk-form-width-large">
-          </div>
-        </div>
-        <div class="uk-form-row">
-          <label class="uk-form-label" for="password">Password</label>
-          <div class="uk-form-controls">
-            <input id="password" maxlength="80" name="password" type="password" class="uk-form-large uk-form-width-large">
-          </div>
-        </div>
-        <div class="uk-form-row">
-          <span class="uk-form-label">Start in mode：</span>
-          <p>
-            <input type="radio" id="mode1" name="mode" value="1"{% if mode == 1 %} checked{% endif %}>
-            <label for="mode1">Browser (Default)</label>
-          </p>
-          <p>
-            <input type="radio" id="mode2" name="mode" value="2"{% if mode == 2 %} checked{% endif %}>
-            <label for="mode2">KCV/74EO</label>
-          </p>
-          <p>
-            <input type="radio" id="mode3" name="mode" value="3"{% if mode == 3 %} checked{% endif %}>
-            <label for="mode3">POI</label>
-          </p>
-          <p>
-            <input type="radio" id="mode4" name="mode" value="4"{% if mode == 4 %} checked{% endif %}>
-            <label for="mode4">Direct link (when cache is outdated)</label>
-          </p>
-        </div>
-        <div class="uk-form-row">
-          <button class="uk-button uk-button-primary uk-button-large">Login</button>
-        </div>
-      </form>
+        {% if errmsg -%}
+            <div class="uk-panel uk-panel-box uk-panel-box-primary uk-margin-bottom">
+                <p class="uk-text-danger">{{ errmsg }}</p>
+            </div>
+        {%- endif %}
+        <form method="post" class="uk-form uk-form-stacked">
+            <div class="uk-form-row">
+                <label class="uk-form-label" for="login_id">Email Address</label>
+                <div class="uk-form-controls">
+                    <input id="login_id" maxlength="80" name="login_id" type="email"
+                           class="uk-form-large uk-form-width-large">
+                </div>
+            </div>
+            <div class="uk-form-row">
+                <label class="uk-form-label" for="password">Password</label>
+                <div class="uk-form-controls">
+                    <input id="password" maxlength="80" name="password" type="password"
+                           class="uk-form-large uk-form-width-large">
+                </div>
+            </div>
+            <div class="uk-form-row">
+                <span class="uk-form-label">Start in mode：</span>
+                <p>
+                    <input type="radio" id="mode1" name="mode" value="1"{% if mode == 1 %} checked{% endif %}>
+                    <label for="mode1">Browser (Default, Chrome Plugin supported.)</label>
+                </p>
+                <p>
+                    <input type="radio" id="mode2" name="mode" value="2"{% if mode == 2 %} checked{% endif %}>
+                    <label for="mode2">KCV/74EO</label>
+                </p>
+                <p>
+                    <input type="radio" id="mode3" name="mode" value="3"{% if mode == 3 %} checked{% endif %}>
+                    <label for="mode3">POI</label>
+                </p>
+                <p>
+                    <input type="radio" id="mode4" name="mode" value="4"{% if mode == 4 %} checked{% endif %}>
+                    <label for="mode4">Direct link (use this when cache is outdated)</label>
+                </p>
+            </div>
+            <div class="uk-form-row">
+                <button class="uk-button uk-button-primary uk-button-large">Login</button>
+            </div>
+        </form>
     </div>
     <div id="ooi-announcement" class="uk-width-medium-3-5">
-      <h2 class="uk-text-primary">NOTICE</h2>
-        <p>This website uses the OOI system. OOI (Online Objects Integration) is an online caching system for DMM web game <i>Kantai Collection (艦隊これくしょん -艦これ)</i></p>
-        <p>This website only support login with the origin DMM account，neither Google nor Facebook account is not supported.</p>
-        <p>This website does not store any user information and is not responsible for any consequences that may be caused by the services of this website.</p>
-        <p>The source code of this website was forked from <a href="https://github.com/acgx/ooi3" target="_blank">this repository </a>and is open sourced under the GPLv3 license.</p>
-        <p>The source code of this website is published in <a href="https://github.com/EnderQIU/ooi3-remastered" target="_blank">this repository </a>and is open sourced under the GPLv3 license.</p>
+        <h2 class="uk-text-primary">NOTICE</h2>
+        <p>This website uses the OOI system. OOI (Online Objects Integration) is an online caching system for DMM web
+            game <i>Kantai Collection (艦隊これくしょん -艦これ)</i></p>
+        <p>This website only support login with the origin DMM account，neither Google nor Facebook account is not
+            supported.</p>
+        <p class="uk-text-warning">This website does not store any user information and is not responsible for any
+            consequences that may be caused by the services of this website.</p>
+        <p>If you would like to use qiniu cdn for a better bandwidth, please install this Chrome Plugin.</p>
+        <p>The source code of this website was forked from <a href="https://github.com/acgx/ooi3" target="_blank">this
+            repository </a>and is open sourced under the GPLv3 license.</p>
+        <p>The source code of this website is published in <a href="https://github.com/EnderQIU/ooi3-remastered"
+                                                              target="_blank">this repository </a>and is open sourced
+            under the GPLv3 license.</p>
     </div>
 {%- endblock %}

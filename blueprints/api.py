@@ -13,7 +13,7 @@ worlds = {}
 api_bp = Blueprint('api', __name__)
 
 
-@api_bp.route('/kcs/resources/image/world/{string:server}_{string:size}.png', methods=('GET', ))
+@api_bp.route('/kcs/resources/image/world/<string:server>_<string:size>.png', methods=('GET', ))
 def world_image(server, size):
     """ 显示正确的镇守府图片。
     舰娘游戏中客户端FLASH请求的镇守府图片是根据FLASH本身的URL生成的，需要根据用户所在的镇守府IP为其显示正确的图片。

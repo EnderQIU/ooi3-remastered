@@ -8,6 +8,7 @@ from flask import Flask
 
 from base import config
 from blueprints.api import api_bp
+from blueprints.cdn import cdn_bp
 from blueprints.frontend import frontend_bp
 from blueprints.service import service_bp
 
@@ -32,6 +33,7 @@ app.config['SECRET_KEY'] = os.urandom(24)
 app.register_blueprint(api_bp)
 app.register_blueprint(frontend_bp)
 app.register_blueprint(service_bp)
+app.register_blueprint(cdn_bp)
 
 
 def detect_proxies():

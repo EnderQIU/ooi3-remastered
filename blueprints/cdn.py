@@ -21,7 +21,7 @@ def upload_file(key, data, mime_type='application/octet-stream'):
                          key=key,
                          data=data,
                          mime_type=mime_type)
-    if info['status_code'] == 200:
+    if info.status_code == 200:
         click.echo("[{time}] Upload success for {key}".format(
             time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             key=key))

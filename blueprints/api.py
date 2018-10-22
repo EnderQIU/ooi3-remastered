@@ -44,7 +44,7 @@ def world_image(server, size):
         return Response(status=400)
 
 
-@api_bp.route('/kcsapi/<string:action>', methods=('GET', 'POST', ))
+@api_bp.route('/kcsapi/<path:action>', methods=('GET', 'POST', ))
 def kcsapi(action):
     """ 转发客户端和游戏服务器之间的API通信。
 
@@ -54,6 +54,8 @@ def kcsapi(action):
     s = requests.Session()
     s.proxies = config.proxies
     s.timeout = 5
+
+    global api_start2
 
     world_ip = session.get('world_ip')
     if world_ip:
@@ -70,7 +72,7 @@ def kcsapi(action):
                 'Origin': 'http://' + world_ip + '/',
                 'Referer': referrer,
             }
-            data = request.post
+            data = request.form
             try:
                 response = s.post(url=url, data=data, headers=headers)
             except requests.exceptions.Timeout:

@@ -62,3 +62,37 @@ def kcs2(static_path):
 
     response = Response(resp.content, resp.status_code, headers)
     return response
+
+
+@cdn_bp.route('/kcs/<path:static_path>', methods=('GET',))
+def kcs(static_path):
+    url = config.upstream + 'kcs/' + static_path
+
+    try:
+        resp = requests.request(
+            method=request.method,
+            url=url,
+            params=request.args,
+            headers={key: value for (key, value) in request.headers if key != 'Host'},
+            data=request.get_data(),
+            cookies=request.cookies,
+            allow_redirects=False)
+    except Timeout:
+        return Response(status=504)
+
+    if resp.ok:
+        if len(request.args) > 0:
+            upload_file('kcs/' + static_path + '?' + urlencode(request.args),
+                        resp.content,
+                        resp.headers.get('Content-Type', 'application/octet-stream'))
+        else:
+            upload_file('kcs/' + static_path,
+                        resp.content,
+                        resp.headers.get('Content-Type', 'application/octet-stream'))
+
+    excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
+    headers = [(name, value) for (name, value) in resp.raw.headers.items()
+               if name.lower() not in excluded_headers]
+
+    response = Response(resp.content, resp.status_code, headers)
+    return response

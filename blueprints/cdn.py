@@ -3,11 +3,12 @@ from urllib.parse import urlencode, quote
 
 import click
 import requests
-from flask import Blueprint, request, Response, jsonify, redirect
+from flask import Blueprint, request, Response, jsonify
 from qiniu import BucketManager, put_data
 from requests import Timeout
 
 from base import config
+from base.response import redirect_with_allow_origin
 
 cdn_bp = Blueprint('cdn', __name__)
 
@@ -55,7 +56,7 @@ def _kcs(ver, static_path):
     # CDN redirect
 
     if full_path in cached_file_names:
-        return redirect(config.cdn_hostname + quote(full_path))
+        return redirect_with_allow_origin(config.cdn_hostname + quote(full_path))
 
     try:
         resp = requests.request(

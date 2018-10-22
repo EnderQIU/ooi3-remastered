@@ -54,8 +54,9 @@ def _kcs(ver, static_path):
     else:
         full_path = ver + static_path
     # CDN redirect
-
     if full_path in cached_file_names:
+        click.echo("[{time}] CDN hit for {full_path}".format(time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                                             full_path=full_path))
         return redirect_with_allow_origin(config.cdn_hostname + quote(full_path))
 
     try:

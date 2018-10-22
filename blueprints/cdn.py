@@ -11,29 +11,20 @@ cdn_bp = Blueprint('cdn', __name__)
 def kcs2(static_path):
     url = config.upstream + 'kcs2/' + static_path
 
-    method = request.method
-    data = request.data or request.form or None
-    headers = dict()
-    for name, value in request.headers:
-        if not value or name == 'Cache-Control':
-            continue
-        headers[name] = value
-
     try:
-        r = requests.request(url=url,
-                             method=method,
-                             params=request.args,
-                             headers=headers,
-                             data=data,
-                             stream=True,
-                             proxies={'http:': config.upstream},
-                             timeout=5)
+        resp = requests.request(
+            method=request.method,
+            url=url,
+            headers={key: value for (key, value) in request.headers if key != 'Host'},
+            data=request.get_data(),
+            cookies=request.cookies,
+            allow_redirects=False)
     except Timeout:
-        return Response(status=403)
-    resp_headers = []
-    for name, value in r.headers.items():
-        if name.lower() in ('content-length', 'connection',
-                            'content-encoding'):
-            continue
-        resp_headers.append((name, value))
-    return Response(r.text, status=r.status_code, headers=resp_headers)
+        return Response(status=504)
+
+    excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
+    headers = [(name, value) for (name, value) in resp.raw.headers.items()
+               if name.lower() not in excluded_headers]
+
+    response = Response(resp.content, resp.status_code, headers)
+    return response

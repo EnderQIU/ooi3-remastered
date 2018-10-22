@@ -71,12 +71,15 @@ def _kcs(ver, static_path):
     except Timeout:
         return Response(status=504)
 
-    if resp.ok:
+    if resp.ok and 'index.php' not in full_path:    # IMPORTANT!! cache this file will expose your token
+                                                    # and cause CORS error!
         upload_file(full_path, resp.content, resp.headers.get('Content-Type', 'application/octet-stream'))
 
     excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
     headers = [(name, value) for (name, value) in resp.raw.headers.items()
                if name.lower() not in excluded_headers]
+    if 'index.php' in full_path:
+        headers.append(('Access-Control-Allow-Origin', '*'))  # Enable CORS for index.php
 
     response = Response(resp.content, resp.status_code, headers)
     return response

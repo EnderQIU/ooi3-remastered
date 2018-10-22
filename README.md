@@ -3,7 +3,16 @@ Online Objects Integration (OOI) system based on flask & requests.
 
 Updated various of python packages. Remastered cdn cache with qiniu.
 
-# Use qiniu CDN
+## How to use qiniu CDN
+You have to add those following four environment variables to supervisor config file:
+
+| KEY                | VALUE                             |
+| :----------------- | :-------------------------------- |
+| QINIU_ACCESS_KEY   | Your access key for qiniu         |
+| QINIU_SECRET_KEY   | Your secret key for qiniu         |
+| QINIU_BUCKET_NAME  | Your CDN bucket name              |
+| QINIU_CDN_HOSTNAME | CDN hostname, must end with slash |
+
 
 ## Trouble Shooter
 1. Q: Any *Permission Denied* error:
@@ -18,6 +27,11 @@ A: `export LC_ALL=C`
 
 A: Use environment variables: `HTTP_PROXY` or `HTTPS_PROXY` such as `export HTTP_PROXY="http://127.0.0.1:1087`.
 
-4. Q: How to use qiniu cdn?
+4. Q: Why I got a CORS exception on Chrome?
 
-A: Set the environment variables: `QINIU_ACCESS_KEY`, `QINIU_SECRET_KEY` and `QINIU_BUCKET_NAME` to yours.
+A: That maybe a chrome bug, install the CORS plugin for chrome will fix that.
+
+5. Q: Async version available?
+
+A: Of course yes. Checkout git reflog #462e148. If your VPS's memeory is under or equal 512MB, I recommend you not to
+   use it.

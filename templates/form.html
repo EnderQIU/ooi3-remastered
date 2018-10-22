@@ -26,7 +26,7 @@
                 <span class="uk-form-label">Start in mode：</span>
                 <p>
                     <input type="radio" id="mode1" name="mode" value="1"{% if mode == 1 %} checked{% endif %}>
-                    <label for="mode1">Browser (Default, Chrome Plugin supported.)</label>
+                    <label for="mode1">Browser (Default, CDN cache supported.)</label>
                 </p>
                 <p>
                     <input type="radio" id="mode2" name="mode" value="2"{% if mode == 2 %} checked{% endif %}>
@@ -54,7 +54,9 @@
             supported.</p>
         <p class="uk-text-warning">This website does not store any user information and is not responsible for any
             consequences that may be caused by the services of this website.</p>
-        <p>If you would like to use qiniu cdn for a better bandwidth, please install this Chrome Plugin.</p>
+        <p>If you choose <b>Browser</b> as the start mode, please install <a
+                href="https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi">the
+            CORS plusgin</a> for Chrome.</p>
         <p>The source code of this website was forked from <a href="https://github.com/acgx/ooi3" target="_blank">this
             repository </a>and is open sourced under the GPLv3 license.</p>
         <p>The source code of this website is published in <a href="https://github.com/EnderQIU/ooi3-remastered"

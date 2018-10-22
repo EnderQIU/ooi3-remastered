@@ -1,9 +1,9 @@
 import datetime
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 
 import click
 import requests
-from flask import Blueprint, request, Response, jsonify
+from flask import Blueprint, request, Response, jsonify, redirect
 from qiniu import BucketManager, put_data
 from requests import Timeout
 
@@ -28,6 +28,8 @@ def upload_file(key, data, mime_type='application/octet-stream'):
                          data=data,
                          mime_type=mime_type)
     if info.status_code == 200:
+        from ooi import cached_file_names
+        cached_file_names.append(key)
         click.echo("[{time}] Upload success for {key}".format(
             time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             key=key))
@@ -43,12 +45,22 @@ def _kcs(ver, static_path):
     :param static_path:
     :return:
     """
-    url = config.upstream + ver + static_path
+    from ooi import cached_file_names
+
+    upstream_url = config.upstream + ver + static_path
+    if len(request.args) > 0:
+        full_path = ver + static_path + '?' + urlencode(request.args)
+    else:
+        full_path = ver + static_path
+    # CDN redirect
+
+    if full_path in cached_file_names:
+        return redirect(config.cdn_hostname + quote(full_path))
 
     try:
         resp = requests.request(
             method=request.method,
-            url=url,
+            url=upstream_url,
             params=request.args,
             headers={key: value for (key, value) in request.headers if key != 'Host'},
             data=request.get_data(),
@@ -59,22 +71,13 @@ def _kcs(ver, static_path):
 
     if resp.ok:
         from ooi import q
-        if len(request.args) > 0:
-            q.enqueue_call(func=upload_file,
-                           args=(ver + static_path,
-                                 resp.content,
-                                 resp.headers.get('Content-Type', 'application/octet-stream'),
-                                 ),
-                           result_ttl=10
-                           )
-        else:
-            q.enqueue_call(func=upload_file,
-                           args=(ver + static_path + '?' + urlencode(request.args),
-                                 resp.content,
-                                 resp.headers.get('Content-Type', 'application/octet-stream'),
-                                 ),
-                           result_ttl=10
-                           )
+        q.enqueue_call(func=upload_file,
+                       args=(full_path,
+                             resp.content,
+                             resp.headers.get('Content-Type', 'application/octet-stream'),
+                             ),
+                       result_ttl=10
+                       )
 
     excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
     headers = [(name, value) for (name, value) in resp.raw.headers.items()
@@ -94,12 +97,7 @@ def kcs(static_path):
     return _kcs('kcs/', static_path)
 
 
-@cdn_bp.route('/cdn_list', methods=('GET', ))
-def cdn_list():
-    """
-    Fetch the list of files available on cdn
-    :return:
-    """
+def _cdn_list():
     from ooi import qiniu
 
     bucket = BucketManager(qiniu)
@@ -108,5 +106,14 @@ def cdn_list():
     delimiter = None
     marker = None
     ret, eof, info = bucket.list(config.bucket_name, prefix, marker, limit, delimiter)
+    return ret, eof, info
 
+
+@cdn_bp.route('/cdn_list', methods=('GET',))
+def cdn_list():
+    """
+    Fetch the list of files available on cdn
+    :return:
+    """
+    ret, eof, info = _cdn_list()
     return jsonify({'total': len(ret.get('items')), 'list': ret.get('items')})

@@ -11,7 +11,7 @@ from worker import conn
 
 from base import config
 from blueprints.api import api_bp
-from blueprints.cdn import cdn_bp
+from blueprints.cdn import cdn_bp, _cdn_list
 from blueprints.frontend import frontend_bp
 from blueprints.service import service_bp
 
@@ -32,6 +32,10 @@ debug = args.debug
 # qiniu init
 qiniu = Auth(config.access_key, config.secret_key)
 bucket_name = config.bucket_name
+
+# Fetch cdn cached file list
+ret, eof, info = _cdn_list()
+cached_file_names = [i.get('key') for i in ret.get('items')]
 
 
 app = Flask(__name__)

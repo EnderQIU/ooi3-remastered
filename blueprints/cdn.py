@@ -1,4 +1,5 @@
 from contextlib import closing
+from urllib.parse import urlencode
 
 import requests
 from flask import Blueprint, request, Response
@@ -10,7 +11,10 @@ cdn_bp = Blueprint('cdn', __name__)
 
 @cdn_bp.route('/kcs2/<path:static_path>', methods=('GET',))
 def kcs2(static_path):
-    url = config.upstream + 'kcs2/' + static_path + '?' + request.query_string
+    url = config.upstream + 'kcs2/' + static_path
+
+    if len(request.args) > 0:
+        url += '?' + urlencode(request.args)
     method = request.method
     data = request.data or request.form or None
     headers = dict()

@@ -1,12 +1,11 @@
 """OOI3: Online Objects Integration version 3.0"""
 
 import argparse
-import datetime
 import os
 
 import click
 from flask import Flask
-from qiniu import Auth, put_data
+from qiniu import Auth
 from rq import Queue
 from worker import conn
 
@@ -33,21 +32,6 @@ debug = args.debug
 # qiniu init
 qiniu = Auth(config.access_key, config.secret_key)
 bucket_name = config.bucket_name
-
-
-def upload_file(key, data, mime_type='application/octet-stream'):
-    token = qiniu.upload_token(bucket_name, key, 30)
-    ret, info = put_data(up_token=token,
-                         key=key,
-                         data=data,
-                         mime_type=mime_type)
-    if info.status_code == 200:
-        click.echo("[{time}] Upload success for {key}".format(
-            time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            key=key))
-    else:
-        click.echo("[{time}] Failed to upload {key}".format(time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                                            key=key))
 
 
 app = Flask(__name__)

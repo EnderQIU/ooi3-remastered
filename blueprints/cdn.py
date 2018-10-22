@@ -3,6 +3,7 @@ from urllib.parse import urlencode
 
 import requests
 from flask import Blueprint, request, Response
+from requests import Timeout
 
 from base import config
 
@@ -23,13 +24,14 @@ def kcs2(static_path):
             continue
         headers[name] = value
 
-    with closing(
-            requests.request(method, url, headers=headers, data=data, stream=True)
-    ) as r:
-        resp_headers = []
-        for name, value in r.headers.items():
-            if name.lower() in ('content-length', 'connection',
-                                'content-encoding'):
-                continue
-            resp_headers.append((name, value))
-        return Response(r, status=r.status_code, headers=resp_headers)
+    try:
+        r = requests.request(method, url, headers=headers, data=data, stream=True)
+    except Timeout:
+        return Response(status=403)
+    resp_headers = []
+    for name, value in r.headers.items():
+        if name.lower() in ('content-length', 'connection',
+                            'content-encoding'):
+            continue
+        resp_headers.append((name, value))
+    return Response(r.content, status=r.status_code, headers=resp_headers)

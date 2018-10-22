@@ -2,8 +2,6 @@ from flask import Response
 
 from werkzeug.utils import escape
 
-from base import config
-
 try:
     from html.entities import name2codepoint
 except ImportError:
@@ -43,7 +41,7 @@ def redirect_with_allow_origin(location, code=302, Response=None):
 
     .. modified::
         Added Access-Control-Allow-Origin header to allow cdn file access
-    
+
     :param location: the location the response should redirect to.
     :param code: the redirect status code. defaults to 302.
     :param class Response: a Response class to use when instantiating a
@@ -67,5 +65,5 @@ def redirect_with_allow_origin(location, code=302, Response=None):
         '<a href="%s">%s</a>.  If not click the link.' %
         (escape(location), display_location), code, mimetype='text/html')
     response.headers['Location'] = location
-    response.headers['Access-Control-Allow-Origin'] = config.cdn_hostname
+    response.headers['Access-Control-Allow-Origin'] = '*'
     return response

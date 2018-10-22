@@ -71,14 +71,7 @@ def _kcs(ver, static_path):
         return Response(status=504)
 
     if resp.ok:
-        from ooi import q
-        q.enqueue_call(func=upload_file,
-                       args=(full_path,
-                             resp.content,
-                             resp.headers.get('Content-Type', 'application/octet-stream'),
-                             ),
-                       result_ttl=10
-                       )
+        upload_file(full_path, resp.content, resp.headers.get('Content-Type', 'application/octet-stream'))
 
     excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
     headers = [(name, value) for (name, value) in resp.raw.headers.items()

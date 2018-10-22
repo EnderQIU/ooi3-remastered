@@ -6,8 +6,6 @@ import os
 import click
 from flask import Flask
 from qiniu import Auth
-from rq import Queue
-from worker import conn
 
 from base import config
 from blueprints.api import api_bp
@@ -46,8 +44,6 @@ app.register_blueprint(api_bp)
 app.register_blueprint(frontend_bp)
 app.register_blueprint(service_bp)
 app.register_blueprint(cdn_bp)
-
-q = Queue(connection=conn)
 
 
 def detect_proxies():

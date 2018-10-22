@@ -1,6 +1,3 @@
-from contextlib import closing
-from urllib.parse import urlencode
-
 import requests
 from flask import Blueprint, request, Response
 from requests import Timeout
@@ -23,7 +20,14 @@ def kcs2(static_path):
         headers[name] = value
 
     try:
-        r = requests.request(url=url, method=method, params=request.args, headers=headers, data=data, stream=True, timeout=5)
+        r = requests.request(url=url,
+                             method=method,
+                             params=request.args,
+                             headers=headers,
+                             data=data,
+                             stream=True,
+                             proxies={'http:': config.upstream},
+                             timeout=5)
     except Timeout:
         return Response(status=403)
     resp_headers = []

@@ -1,1 +1,1 @@
-git pull && chown -R www-data:www-data ./ && supervisorctl restart ooi3
+git pull && source ../venv/bin/activate && pip install -r requirements.txt &&chown -R www-data:www-data ./ && supervisorctl restart ooi3

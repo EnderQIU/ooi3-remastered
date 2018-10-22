@@ -107,7 +107,7 @@ class KancolleAuth:
         """
         self.session.close()
 
-    def _request(self, url, method='GET', data=None, timeout_message='连接失败', timeout=10):
+    def _request(self, url, method='GET', data=None, timeout_message='Connection Timeout.', timeout=10):
         """使用 requests.get() 包装过的会话向远端服务器发起请求。
         `url`为请求的URL地址，`method`为请求的方法， `data`为发起POST请求时的数据，`timeout_message`为请求超时后抛出异常所带的信息，
         `timeout`为超时时间，单位为秒。
@@ -136,20 +136,20 @@ class KancolleAuth:
         response = self._request(self.urls['login'],
                                  method='GET',
                                  data=None,
-                                 timeout_message='连接DMM登录页失败')
+                                 timeout_message='Connection Timeout for DMM token.')
         html = response.text
 
         m = self.patterns['dmm_token'].search(html)
         if m:
             self.dmm_token = m.group(1)
         else:
-            raise OOIAuthException('获取DMM token失败，可能是未正确配置代理服务器？')
+            raise OOIAuthException('Failed to fetch DMM token, are you in Japan?')
 
         m = self.patterns['token'].search(html)
         if m:
             self.token = m.group(1)
         else:
-            raise OOIAuthException('获取token失败')
+            raise OOIAuthException('Failed to fetch token.')
         return self.dmm_token, self.token
 
     def _get_ajax_token(self):
@@ -165,7 +165,7 @@ class KancolleAuth:
         response = self._request(self.urls['ajax'],
                                  method='POST',
                                  data=data,
-                                 timeout_message='DMM登录页AJAX请求失败')
+                                 timeout_message='Connection Timeout for AJAX token.')
         j = response.json()
 
         try:
@@ -173,7 +173,7 @@ class KancolleAuth:
             self.idKey = j['body']['login_id']
             self.pwdKey = j['body']['password']
         except Exception:
-            raise OOIAuthException('DMM修改登录机制了，请通知管理员处理')
+            raise OOIAuthException('DMM has changed its login method, please contact your administrator.')
         return self.token, self.idKey, self.pwdKey
 
     def _get_osapi_url(self):
@@ -191,20 +191,20 @@ class KancolleAuth:
         response = self._request(self.urls['auth'],
                                  method='POST',
                                  data=data,
-                                 timeout_message='连接DMM认证网页失败')
+                                 timeout_message='Connection timeout for DMM login page.')
         html = response.text
         m = self.patterns['reset'].search(html)
         if m:
-            raise OOIAuthException('DMM强制要求用户修改密码')
+            raise OOIAuthException('DMM requests a password change.')
 
         response = self._request(self.urls['game'],
-                                 timeout_message='连接舰队collection游戏页面失败')
+                                 timeout_message='Connection timeout for DMM game page.')
         html = response.text
         m = self.patterns['osapi'].search(html)
         if m:
             self.osapi_url = m.group(1)
         else:
-            raise OOIAuthException('用户名或密码错误，请重新输入')
+            raise OOIAuthException('Wrong username or password.')
 
         return self.osapi_url
 
@@ -218,14 +218,14 @@ class KancolleAuth:
         self.st = qs['st'][0]
         url = self.urls['get_world'] % (self.owner, int(time.time()*1000))
         self.session.headers['Referer'] = self.osapi_url
-        response = self._request(url, timeout_message='调查提督所在镇守府失败')
+        response = self._request(url, timeout_message='Connection timeout when looking for Jinjufu')
         html = response.text
         svdata = json.loads(html[7:])
         if svdata['api_result'] == 1:
             self.world_id = svdata['api_data']['api_world_id']
             self.world_ip = self.world_ip_list[self.world_id-1]
         else:
-            raise OOIAuthException('调查提督所在镇守府时发生错误')
+            raise OOIAuthException('Server error when looking for Jinjufu')
 
         return self.world_id, self.world_ip, self.st
 
@@ -249,14 +249,14 @@ class KancolleAuth:
         response = self._request(self.urls['make_request'],
                                  method='POST',
                                  data=data,
-                                 timeout_message='调查提督进入镇守府的口令失败')
+                                 timeout_message='Connection timeout when requesting token for entering the Jinjufu.')
         html = response.text
         svdata = json.loads(html[27:])
         if svdata[url]['rc'] != 200:
-            raise OOIAuthException('调查提督进入镇守府的口令失败')
+            raise OOIAuthException('Server error when parsing token for entering the Jinjufu.')
         svdata = json.loads(svdata[url]['body'][7:])
         if svdata['api_result'] != 1:
-            raise OOIAuthException('调查提督进入镇守府的口令时发生错误')
+            raise OOIAuthException('Server error when parsing token for entering the Jinjufu.')
         self.api_token = svdata['api_token']
         self.api_starttime = svdata['api_starttime']
         self.entry = self.urls['entry'] % (self.world_ip, self.api_token, self.api_starttime)

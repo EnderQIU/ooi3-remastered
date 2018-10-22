@@ -32,4 +32,4 @@ def kcs2(static_path):
                             'content-encoding'):
             continue
         resp_headers.append((name, value))
-    return Response(r.content, status=r.status_code, headers=resp_headers)
+    return Response(r.text, status=r.status_code, headers=resp_headers)

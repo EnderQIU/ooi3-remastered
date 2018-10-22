@@ -15,7 +15,7 @@ q = Auth(config.access_key, config.secret_key)
 bucket_name = config.bucket_name
 
 
-async def upload_file(key, data, mime_type='application/octet-stream'):
+def upload_file(key, data, mime_type='application/octet-stream'):
     token = q.upload_token(bucket_name, key, 30)
     ret, info = put_data(up_token=token,
                          key=key,

@@ -5,8 +5,10 @@ Online Objects Integration (OOI) system based on flask & requests.
 1. Updated various of python packages.
 2. Flask-caching static files with redis.
 
-## 4.0.0。0 Branch
-API version 4.0.0.0 iOS not supported.
+## 4.2.0.2 Branch
+This branch use API version 4.2.0.2 and its default iframe plugin is html5 which is 
+supported by all desktop and mobile devices. Since its a new API version, I'm quite
+not sure what would happen under it. Any issue or pull requests are welcomed.
 
 ## Trouble Shooter
 1. Q: Any *Permission Denied* error:

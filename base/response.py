@@ -25,7 +25,7 @@ class JsonResponse(Response):
     """
 
 
-def redirect_with_allow_origin(location, code=302, Response=None):
+def redirect_with_use_cdn(location, code=302, Response=None):
     """Returns a response object (a WSGI application) that, if called,
     redirects the client to the target location.  Supported codes are 301,
     302, 303, 305, and 307.  300 is not supported because it's not a real
@@ -40,7 +40,7 @@ def redirect_with_allow_origin(location, code=302, Response=None):
         The class used for the Response object can now be passed in.
 
     .. modified::
-        Added Access-Control-Allow-Origin header to allow cdn file access
+        Added Access-Control-Allow-Origin header and use_cdn para to allow cdn file access
 
     :param location: the location the response should redirect to.
     :param code: the redirect status code. defaults to 302.
@@ -48,6 +48,7 @@ def redirect_with_allow_origin(location, code=302, Response=None):
         response. The default is :class:`werkzeug.wrappers.Response` if
         unspecified.
     """
+    location = location + '?useCdn=true'  # Add this param to let nginx use cdn upstream
     if Response is None:
         from werkzeug.wrappers import Response
 

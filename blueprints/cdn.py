@@ -8,7 +8,7 @@ from qiniu import BucketManager, put_data
 from requests import Timeout
 
 from base import config
-from base.response import redirect_with_allow_origin
+from base.response import redirect_with_use_cdn
 
 cdn_bp = Blueprint('cdn', __name__)
 
@@ -57,7 +57,7 @@ def _kcs(ver, static_path):
     if full_path in cached_file_names:
         click.echo("[{time}] CDN hit for {full_path}".format(time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                                                              full_path=full_path))
-        return redirect_with_allow_origin(config.cdn_hostname + quote(full_path))
+        return redirect_with_use_cdn(config.hostname + quote(full_path))
 
     try:
         resp = requests.request(

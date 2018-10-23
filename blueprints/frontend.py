@@ -34,13 +34,13 @@ def login():
     mode = int(post.get('mode', 1))
     session['mode'] = mode
     if login_id and password:
-        kancolle = KancolleAuth(login_id, password)
+        kancolle_auth = KancolleAuth(login_id, password)
         if mode in (1, 2, 3):
             try:
-                kancolle.get_entry()
-                session['api_token'] = kancolle.api_token
-                session['api_starttime'] = kancolle.api_starttime
-                session['world_ip'] = kancolle.world_ip
+                kancolle_auth.get_entry()
+                session['api_token'] = kancolle_auth.api_token
+                session['api_starttime'] = kancolle_auth.api_starttime
+                session['world_ip'] = kancolle_auth.world_ip
                 if mode == 2:
                     return redirect('/kcv')
                 elif mode == 3:
@@ -51,7 +51,7 @@ def login():
                 return render_template('form.html', errmsg=e.message, mode=mode)
         elif mode == 4:
             try:
-                osapi_url = kancolle.get_osapi()
+                osapi_url = kancolle_auth.get_osapi()
                 session['osapi_url'] = osapi_url
                 return redirect('/connector')
             except OOIAuthException as e:

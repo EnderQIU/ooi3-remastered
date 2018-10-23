@@ -6,6 +6,7 @@ from flask import Response, Blueprint, request
 
 from auth.exceptions import OOIAuthException
 from auth.kancolle import KancolleAuth
+from base.response import JsonResponse, BadResponse
 
 service_bp = Blueprint('service', __name__)
 
@@ -30,9 +31,9 @@ def get_osapi():
         except OOIAuthException as e:
             result = {'status': 0,
                       'message': e.message}
-        return Response(result, headers=headers)
+        return JsonResponse(result, headers=headers)
     else:
-        return Response(status=400)
+        return BadResponse('Both username and password is required.')
 
 
 @service_bp.route('/service/flash', methods=('POST', ))
@@ -57,4 +58,4 @@ def get_flash():
                       'message': e.message}
         return Response(result, headers=headers)
     else:
-        return Response(status=400)
+        return BadResponse('Both username and password is required.')

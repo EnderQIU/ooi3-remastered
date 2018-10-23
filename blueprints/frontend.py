@@ -1,9 +1,10 @@
 """OOI3的前端部分，用于显示各种页面。
 包含了登录表单、登录后的跳转、不同的游戏运行模式和注销页面。
 """
-from flask import render_template, redirect, Response, Blueprint, session, request
+from flask import render_template, redirect, Blueprint, session, request
 
 from auth.kancolle import KancolleAuth, OOIAuthException
+from base.response import BadResponse
 
 frontend_bp = Blueprint('frontend', __name__)
 
@@ -57,7 +58,7 @@ def login():
             except OOIAuthException as e:
                 return render_template('form.html', errmsg=e.message, mode=mode)
         else:
-            return Response(status=400)
+            return BadResponse("Invalid mode")
     else:
         return render_template('form.html', errmsg='Please input your username and password.', mode=mode)
 

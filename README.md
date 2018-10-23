@@ -3,16 +3,6 @@ Online Objects Integration (OOI) system based on flask & requests.
 
 Updated various of python packages. Remastered cdn cache with qiniu.
 
-## How to use qiniu CDN
-You have to add those following four environment variables to supervisor config file:
-
-| KEY                | VALUE                             |
-| :----------------- | :-------------------------------- |
-| QINIU_ACCESS_KEY   | Your access key for qiniu         |
-| QINIU_SECRET_KEY   | Your secret key for qiniu         |
-| QINIU_BUCKET_NAME  | Your CDN bucket name              |
-
-
 ## Trouble Shooter
 1. Q: Any *Permission Denied* error:
 

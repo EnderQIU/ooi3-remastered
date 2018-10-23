@@ -7,6 +7,7 @@ from flask import Blueprint, request, Response, jsonify, redirect
 from qiniu import BucketManager, put_data
 from requests import Timeout
 
+from auth.exceptions import OOIConfigurationError
 from base import config
 
 cdn_bp = Blueprint('cdn', __name__)
@@ -23,6 +24,7 @@ def upload_file(key, data, mime_type='application/octet-stream'):
     from ooi import qiniu
 
     assert not key.startswith('http') and not key.startswith('/'), 'key should not start with http or slash!'
+    assert not key.endswith('useCdn=true'), "key should not end with useCdn=true. Nginx maybe not properly configured."
 
     token = qiniu.upload_token(config.bucket_name, key, 30)
     ret, info = put_data(up_token=token,
@@ -60,6 +62,11 @@ def _kcs(ver, static_path):
                                                         path=path))
         # Add useCdn=true to tell nginx proxy_pass to cdn
         return redirect('/' + quote(path) + '?useCdn=true')  # urlencode is needed for qiniu
+    elif path.endswith('?useCdn=true'):
+        raise OOIConfigurationError("[{time}] Nginx is not properly configured,"
+                                    " a request ends with '?useCdn=true'"
+                                    " is proxy_passed to flask server."
+                                    .format(time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
     else:
         full_path = config.upstream + path
 
@@ -75,8 +82,8 @@ def _kcs(ver, static_path):
     except Timeout:
         return Response(status=504)
 
-    if resp.ok and not path.startswith('kcs2/index.php'):   # IMPORTANT!! cache this file will expose your token
-                                                            # and cause CORS error!
+    if resp.ok and not path.startswith('kcs2/index.php'):  # IMPORTANT!! cache this file will expose your token
+        # and cause CORS error!
         upload_file(path, resp.content, resp.headers.get('Content-Type', 'application/octet-stream'))
 
     excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']

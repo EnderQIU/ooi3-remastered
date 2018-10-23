@@ -8,7 +8,6 @@ from qiniu import BucketManager, put_data
 from requests import Timeout
 
 from base import config
-from base.response import redirect_with_use_cdn
 
 cdn_bp = Blueprint('cdn', __name__)
 
@@ -48,21 +47,23 @@ def _kcs(ver, static_path):
     """
     from ooi import cached_file_names
 
-    upstream_url = config.upstream + ver + static_path
     if len(request.args) > 0:
-        full_path = ver + static_path + '?' + urlencode(request.args)
+        path = ver + static_path + '?' + urlencode(request.args)
     else:
-        full_path = ver + static_path
+        path = ver + static_path
+
     # CDN redirect
-    if full_path in cached_file_names:
-        click.echo("[{time}] CDN hit for {full_path}".format(time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                                             full_path=full_path))
-        return redirect_with_use_cdn(config.hostname + quote(full_path))
+    if path in cached_file_names:  # CDN hit
+        click.echo("[{time}] CDN hit for {path}".format(time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                                        path=path))
+        full_path = config.cdn_hostname + quote(path)  # urlencode is needed for qiniu
+    else:
+        full_path = config.upstream + path
 
     try:
         resp = requests.request(
             method=request.method,
-            url=upstream_url,
+            url=full_path,
             params=request.args,
             headers={key: value for (key, value) in request.headers if key != 'Host'},
             data=request.get_data(),
@@ -71,8 +72,8 @@ def _kcs(ver, static_path):
     except Timeout:
         return Response(status=504)
 
-    if resp.ok and 'index.php' not in full_path:    # IMPORTANT!! cache this file will expose your token
-                                                    # and cause CORS error!
+    if resp.ok and not path.startswith('kcs2/index.php'):   # IMPORTANT!! cache this file will expose your token
+                                                            # and cause CORS error!
         upload_file(full_path, resp.content, resp.headers.get('Content-Type', 'application/octet-stream'))
 
     excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
@@ -95,7 +96,7 @@ def kcs(static_path):
     return _kcs('kcs/', static_path)
 
 
-def _cdn_list():
+def fetch_cdn_list():
     from ooi import qiniu
 
     bucket = BucketManager(qiniu)
@@ -113,5 +114,5 @@ def cdn_list():
     Fetch the list of files available on cdn
     :return:
     """
-    ret, eof, info = _cdn_list()
+    ret, eof, info = fetch_cdn_list()
     return jsonify({'total': len(ret.get('items')), 'list': ret.get('items')})

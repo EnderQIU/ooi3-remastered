@@ -11,7 +11,7 @@ You have to add those following four environment variables to supervisor config 
 | QINIU_ACCESS_KEY   | Your access key for qiniu         |
 | QINIU_SECRET_KEY   | Your secret key for qiniu         |
 | QINIU_BUCKET_NAME  | Your CDN bucket name              |
-| OOI_HOSTNAME       | OOI hostname, must end with slash |
+| QINIU_CDN_HOSTNAME | CDN hostname, must end with slash |
 
 
 ## Trouble Shooter

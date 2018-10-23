@@ -9,7 +9,7 @@ from qiniu import Auth
 
 from base import config
 from blueprints.api import api_bp
-from blueprints.cdn import cdn_bp, _cdn_list
+from blueprints.cdn import cdn_bp, fetch_cdn_list
 from blueprints.frontend import frontend_bp
 from blueprints.service import service_bp
 
@@ -27,14 +27,9 @@ host = args.host
 port = args.port
 debug = args.debug
 
-# qiniu init
+# Shared vars
 qiniu = Auth(config.access_key, config.secret_key)
-bucket_name = config.bucket_name
-
-# Fetch cdn cached file list
-ret, eof, info = _cdn_list()
-cached_file_names = [i.get('key') for i in ret.get('items')]
-
+cached_file_names = None
 
 app = Flask(__name__)
 
@@ -56,6 +51,28 @@ def detect_proxies():
         click.echo(' * No HTTP proxy detected, make sure your server\'s ip is in Japan.')
 
 
+def check_env():
+    """
+    Check all environment variables are set correctly
+    :return:
+    """
+    if config.access_key is None \
+            or config.secret_key is None \
+            or config.bucket_name is None \
+            or config.cdn_hostname is None:
+        click.echo('Please set all environment variables correctly!')
+        exit(1)
+
+
 if __name__ == '__main__':
     detect_proxies()
+    check_env()
+
+    # qiniu init
+    bucket_name = config.bucket_name
+
+    # Fetch cdn cached file list
+    ret, eof, info = fetch_cdn_list()
+    cached_file_names = [i.get('key') for i in ret.get('items')]
+
     app.run(host=host, port=port, debug=debug)

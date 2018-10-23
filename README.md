@@ -5,6 +5,9 @@ Online Objects Integration (OOI) system based on flask & requests.
 1. Updated various of python packages.
 2. Flask-caching static files with redis.
 
+## 4.0.0。0 Branch
+API version 4.0.0.0 iOS not supported.
+
 ## Trouble Shooter
 1. Q: Any *Permission Denied* error:
 

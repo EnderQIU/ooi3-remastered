@@ -29,7 +29,15 @@ debug = args.debug
 
 # Shared vars
 qiniu = Auth(config.access_key, config.secret_key)
-cached_file_names = None
+
+# qiniu init
+bucket_name = config.bucket_name
+
+# Fetch cdn cached file list
+items = fetch_cdn_list()
+cached_file_names = [i.get('key') for i in items]
+if cached_file_names is None:  # init repo is None
+    cached_file_names = []
 
 app = Flask(__name__)
 
@@ -67,12 +75,4 @@ if __name__ == '__main__':
     detect_proxies()
     check_env()
 
-    # qiniu init
-    bucket_name = config.bucket_name
-
-    # Fetch cdn cached file list
-    items = fetch_cdn_list()
-    cached_file_names = [i.get('key') for i in items]
-    if cached_file_names is None:  # init repo is None
-        cached_file_names = []
     app.run(host=host, port=port, debug=debug)

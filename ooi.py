@@ -71,7 +71,8 @@ if __name__ == '__main__':
     bucket_name = config.bucket_name
 
     # Fetch cdn cached file list
-    ret, eof, info = fetch_cdn_list()
-    cached_file_names = [i.get('key') for i in ret.get('items')]
-
+    items = fetch_cdn_list()
+    cached_file_names = [i.get('key') for i in items]
+    if cached_file_names is None:  # init repo is None
+        cached_file_names = []
     app.run(host=host, port=port, debug=debug)

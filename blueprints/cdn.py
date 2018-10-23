@@ -106,7 +106,12 @@ def fetch_cdn_list():
     delimiter = None
     marker = None
     ret, eof, info = bucket.list(config.bucket_name, prefix, marker, limit, delimiter)
-    return ret, eof, info
+    if ret is None:
+        click.echo("[{time}] Failed to fetch cdn file list. {info}".format(
+            time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            info=str(info)
+        ))
+    return ret.get('items', [])
 
 
 @cdn_bp.route('/cdn_list', methods=('GET',))
@@ -115,5 +120,5 @@ def cdn_list():
     Fetch the list of files available on cdn
     :return:
     """
-    ret, eof, info = fetch_cdn_list()
-    return jsonify({'total': len(ret.get('items')), 'list': ret.get('items')})
+    items = fetch_cdn_list()
+    return jsonify({'total': len(items), 'list': items})

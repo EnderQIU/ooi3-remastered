@@ -58,8 +58,7 @@ def check_env():
     """
     if config.access_key is None \
             or config.secret_key is None \
-            or config.bucket_name is None \
-            or config.cdn_hostname is None:
+            or config.bucket_name is None:
         click.echo('Please set all environment variables correctly!')
         exit(1)
 

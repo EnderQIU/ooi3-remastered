@@ -3,7 +3,7 @@ from urllib.parse import urlencode, quote
 
 import click
 import requests
-from flask import Blueprint, request, Response, jsonify
+from flask import Blueprint, request, Response, jsonify, redirect
 from qiniu import BucketManager, put_data
 from requests import Timeout
 
@@ -56,7 +56,8 @@ def _kcs(ver, static_path):
     if path in cached_file_names:  # CDN hit
         click.echo("[{time}] CDN hit for {path}".format(time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                                                         path=path))
-        full_path = config.cdn_hostname + quote(path)  # urlencode is needed for qiniu
+        # Add useCdn=true to tell nginx proxy_pass to cdn
+        return redirect('/' + quote(path) + '?useCdn=true')  # urlencode is needed for qiniu
     else:
         full_path = config.upstream + path
 

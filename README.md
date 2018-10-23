@@ -1,7 +1,9 @@
 # OOI v3 Remastered
 Online Objects Integration (OOI) system based on flask & requests.
 
-Updated various of python packages. Remastered cdn cache with qiniu.
+## Features
+1. Updated various of python packages.
+2. Flask-caching static files with redis.
 
 ## Trouble Shooter
 1. Q: Any *Permission Denied* error:

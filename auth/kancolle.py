@@ -25,7 +25,7 @@ class KancolleAuth:
                      '?api_root=/kcsapi'
                      '&voice_root=/kcs/sound'
                      '&osapi_root=osapi.dmm.com'
-                     '&version=4.0.0.0'
+                     '&version=4.2.0.2'
                      '&api_token=%s'
                      '&api_starttime=%d'}
 

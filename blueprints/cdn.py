@@ -22,6 +22,8 @@ def upload_file(key, data, mime_type='application/octet-stream'):
     """
     from ooi import qiniu
 
+    assert not key.startswith('http') and not key.startswith('/'), 'key should not start with http or slash!'
+
     token = qiniu.upload_token(config.bucket_name, key, 30)
     ret, info = put_data(up_token=token,
                          key=key,
@@ -75,7 +77,7 @@ def _kcs(ver, static_path):
 
     if resp.ok and not path.startswith('kcs2/index.php'):   # IMPORTANT!! cache this file will expose your token
                                                             # and cause CORS error!
-        upload_file(full_path, resp.content, resp.headers.get('Content-Type', 'application/octet-stream'))
+        upload_file(path, resp.content, resp.headers.get('Content-Type', 'application/octet-stream'))
 
     excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
     headers = [(name, value) for (name, value) in resp.raw.headers.items()

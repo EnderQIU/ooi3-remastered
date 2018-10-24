@@ -4,6 +4,8 @@ Online Objects Integration (OOI) system based on flask & requests.
 ## Features
 1. Updated various of python packages.
 2. Flask-caching static files with redis.
+3. HTTPS Supported.
+4. Running in 2nd Sequence (HTML5 game mode).
 
 ## 4.2.0.2 Branch
 This branch use API version 4.2.0.2 and its default iframe plugin is html5 which is 
@@ -22,12 +24,3 @@ A: `export LC_ALL=C`
 3. Q: How to use proxy?
 
 A: Use environment variables: `HTTP_PROXY` or `HTTPS_PROXY` such as `export HTTP_PROXY="http://127.0.0.1:1087`.
-
-4. Q: Why I got a CORS exception on Chrome?
-
-A: That maybe a chrome bug, install the CORS plugin for chrome will fix that.
-
-5. Q: Async version available?
-
-A: Of course yes. Checkout git reflog #462e148. If your VPS's memeory is under or equal 512MB, I recommend you not to
-   use it.

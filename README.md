@@ -1,3 +1,4 @@
+![Header](https://raw.githubusercontent.com/EnderQIU/ooi3-remastered/4.2.0.2/static/img/logo.png)
 # OOI v3 Remastered
 Online Objects Integration (OOI) system based on flask & requests.
 
@@ -11,6 +12,23 @@ Online Objects Integration (OOI) system based on flask & requests.
 This branch use API version 4.2.0.2 and its default iframe plugin is html5 which is 
 supported by all modern desktop and mobile devices. Since its a new API version, I'm quite
 not sure what would happen under it. Any issue or pull requests are welcomed.
+
+## Demo Website
+You can visit this [demo website](http://ooi.enderqiu.cn/) with part of features except HTTPS.
+We highly recommend you deploy this site on the VPS owned by yourself with HTTPS if you are worried
+aboute some security problems.
+~~The real reason is the demo site uses CDN to accelerate traffic which can incur a high cost.~~
+
+## Dependency
+- The memory is suggested to be higher than 512MB if you switch on the Redis-File-Cache.
+- Ubuntu 16.04 with bbr. (Recommend, other OS is ok. BBR can show a better traffic performance.)
+- Nginx
+- Supervisor
+- uwsgi
+- python 3.5 or higher
+
+## Deploy
+Please refer to the config files in the `doc/` directory.
 
 ## Trouble Shooter
 1. Q: Any *Permission Denied* error:

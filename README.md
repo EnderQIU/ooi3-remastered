@@ -28,7 +28,7 @@ aboute some security problems.
 - python 3.5 or higher
 
 ## Deploy
-Please refer to the config files in the `doc/` directory.
+Please refer to the config files in the `deploy/` directory.
 
 ## Trouble Shooter
 1. Q: Any *Permission Denied* error:

@@ -23,4 +23,4 @@ A: `export LC_ALL=C`
 
 3. Q: How to use proxy?
 
-A: Use environment variables: `HTTP_PROXY` or `HTTPS_PROXY` such as `export HTTP_PROXY="http://127.0.0.1:1087`.
+A: Set the environment variables: `HTTP_PROXY` or `HTTPS_PROXY` e.g. `export HTTP_PROXY="http://127.0.0.1:1087`.

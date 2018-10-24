@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content -%}
-    <div class="uk-width-1-1 uk-alert" data-uk-alert>
+    <div class="uk-alert uk-align-center" data-uk-alert>
         <a href="" class="uk-alert-close uk-close"></a>
-        <p>Login success! Please wait a few minutes for game loading...</p>
+        <p>Login success! Please wait a few minutes while game is loading...</p>
     </div>
-    <div id="ooi-game" class="uk-width-1-1 uk-text-center">
+    <div id="ooi-game" class="uk-align-center">
         <iframe src="{{ scheme }}://{{ host }}/kcs2/index.php?api_root=/kcsapi&amp;voice_root=/kcs/sound&amp;osapi_root=osapi.dmm.com&amp;version=4.2.0.2&amp;api_token={{ token }}&amp;api_starttime={{ starttime }}"
                 id="htmlWrap" scrolling="no" frameborder="0"
                 style="width:1200px; height: 720px; margin: 0px 0px 0px 0px;"></iframe>
     </div>
-    <a href="/logout" class="uk-button uk-button-primary">Logout</a>
+    <div id="ooi-footer" class="uk-align-center">
+        <a href="/logout" class="uk-button uk-button-primary">Logout</a>
+    </div>
 {%- endblock %}

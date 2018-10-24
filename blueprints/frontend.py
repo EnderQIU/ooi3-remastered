@@ -131,7 +131,7 @@ def poi():
     :return: rv
     """
     # Use http for POI
-    if request.scheme == 'https' and app.config['FLASK_ENV'] == 'production':
+    if request.scheme == 'https' and app.config['ENV'] == 'production':
         return redirect(url_for('frontend.poi', _scheme="http", _external=True))
     token = session.get('api_token', None)
     starttime = session.get('api_starttime', None)

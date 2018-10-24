@@ -24,3 +24,7 @@ A: `export LC_ALL=C`
 3. Q: How to use proxy?
 
 A: Set the environment variables: `HTTP_PROXY` or `HTTPS_PROXY` e.g. `export HTTP_PROXY="http://127.0.0.1:1087`.
+
+4. Q: No data caught by POI when start in POI mode using HTTPS?
+
+A: Don't forcefully redirect HTTP to HTTPS because POI can't catch HTTPS data.

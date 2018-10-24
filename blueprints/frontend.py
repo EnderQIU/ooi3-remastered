@@ -1,8 +1,9 @@
 """OOI3的前端部分，用于显示各种页面。
 包含了登录表单、登录后的跳转、不同的游戏运行模式和注销页面。
 """
-from flask import render_template, redirect, Blueprint, session, request
+from flask import render_template, redirect, Blueprint, session, request, url_for
 
+from app import app
 from auth.kancolle import KancolleAuth, OOIAuthException
 from base.response import BadResponse
 
@@ -129,6 +130,9 @@ def poi():
 
     :return: rv
     """
+    # Use http for POI
+    if request.scheme == 'https' and app.config['FLASK_ENV'] == 'production':
+        return redirect(url_for('frontend.poi', _scheme="http", _external=True))
     token = session.get('api_token', None)
     starttime = session.get('api_starttime', None)
     world_ip = session.get('world_ip', None)

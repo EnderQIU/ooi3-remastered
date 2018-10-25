@@ -8,3 +8,4 @@ venv/
 /lib64
 /pip-selfcheck.json
 /pyvenv.cfg
+.DS_Store

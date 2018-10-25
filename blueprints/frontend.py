@@ -24,9 +24,9 @@ def form():
     return render_template('form.html', mode=mode)
 
 
-def test_login(login_id, password, mode):
+def debug_login(login_id, password, mode):
     """
-    Test login for local debug.
+    login page for local debug.
     :param login_id:
     :param password:
     :param mode:
@@ -80,7 +80,7 @@ def login():
     session['mode'] = mode
 
     if app.config['ENV'] == 'development' and test_mode:
-        return test_login(login_id, password, mode)
+        return debug_login(login_id, password, mode)
 
     if login_id and password:
         kancolle_auth = KancolleAuth(login_id, password)
@@ -111,7 +111,7 @@ def login():
         return render_template('form.html', errmsg='Please input your username and password.', mode=mode)
 
 
-def test_kancolle():
+def debug_kancolle():
     """
     kancolle page for local debug
     :return:
@@ -138,7 +138,7 @@ def kancolle():
     :return: rv
     """
     if session['test_mode']:
-        return test_kancolle()
+        return debug_kancolle()
 
     token = session.get('api_token', None)
     starttime = session.get('api_starttime', None)
@@ -154,7 +154,7 @@ def kancolle():
         return redirect('/')
 
 
-def test_kcv():
+def debug_kcv():
     """
     kcv page for local debug
     :return:
@@ -177,7 +177,7 @@ def kcv():
     :return: rv
     """
     if session['test_mode']:
-        return test_kcv()
+        return debug_kcv()
 
     token = session.get('api_token', None)
     starttime = session.get('api_starttime', None)
@@ -189,7 +189,7 @@ def kcv():
         return redirect('/')
 
 
-def test_flash():
+def debug_flash():
     """
     flash page for local debug
     :return:
@@ -216,14 +216,14 @@ def flash():
     :return: rv
     """
     if session['test_mode']:
-        return test_flash()
+        return debug_flash()
 
     token = session.get('api_token', None)
     starttime = session.get('api_starttime', None)
     world_ip = session.get('world_ip', None)
     if token and starttime and world_ip:
-        context = {'scheme': 'http',
-                   'host': '127.0.0.1:5000/static/game.png?realSrc=',
+        context = {'scheme': request.scheme,
+                   'host': request.host,
                    'token': token,
                    'starttime': starttime}
         return render_template('flash.html', **context)
@@ -232,7 +232,7 @@ def flash():
         return redirect('/')
 
 
-def test_poi():
+def debug_poi():
     """
     poi page for local test
     :return:
@@ -241,8 +241,8 @@ def test_poi():
     starttime = session.get('api_starttime', None)
     world_ip = session.get('world_ip', None)
     if token and starttime and world_ip:
-        context = {'scheme': request.scheme,
-                   'host': request.host,
+        context = {'scheme': 'http',
+                   'host': '127.0.0.1:5000/static/game.png?realSrc=',
                    'token': token,
                    'starttime': starttime}
         return render_template('poi.html', **context)
@@ -259,7 +259,7 @@ def poi():
     :return: rv
     """
     if session['test_mode']:
-        return test_poi()
+        return debug_poi()
 
     # Use http for POI
     if request.scheme == 'https' and app.config['ENV'] == 'production':
@@ -278,12 +278,29 @@ def poi():
         return redirect('/')
 
 
+def debug_connector():
+    """
+    connector page for local debug
+    :return:
+    """
+    osapi_url = session.get('osapi_url', None)
+    if osapi_url:
+        context = {'osapi_url': osapi_url}
+        return render_template('connector.html', **context)
+    else:
+        session.clear()
+        return redirect('/')
+
+
 @frontend_bp.route('/connector', methods=('GET',))
 def connector():
     """适配登录器直连模式结果页面，提供osapi.dmm.com的链接。
 
     :return: rv
     """
+    if session['test_mode']:
+        return debug_connector()
+
     osapi_url = session.get('osapi_url', None)
     if osapi_url:
         context = {'osapi_url': osapi_url}

@@ -16,7 +16,9 @@ not sure what would happen under it. Any issue or pull requests are welcomed.
 ## Demo Website
 You can visit this [demo website](http://ooi.enderqiu.cn/) with part of features except HTTPS.
 We highly recommend you deploy this site on the VPS owned by yourself with HTTPS if you are worried
-aboute some security problems.
+about some security problems.
+
+
 ~~The real reason is the demo site uses CDN to accelerate traffic which can incur a high cost.~~
 
 ## Dependency

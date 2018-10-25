@@ -14,16 +14,13 @@ supported by all modern desktop and mobile devices. Since it's a new API version
 not sure what would happen under it. Any issue or pull requests are welcomed.
 
 ## Demo Website
-You can visit this [demo website](http://ooi.enderqiu.cn/) with part of features except HTTPS.
+You can visit this [demo website](http://ooi.enderqiu.cn/) to preview all features (HTTPS supported).
 We highly recommend you deploy this site on the VPS owned by yourself with HTTPS if you are worried
 about some security problems.
 
-
-~~The real reason is the demo site uses CDN to accelerate traffic which can incur a high cost.~~
-
 ## Dependency
 - The memory is suggested to be higher than 512MB if you switch on the Redis-File-Cache.
-- Ubuntu 16.04 with bbr. (Recommend, other OS is ok. BBR can show a better traffic performance.)
+- Ubuntu 16.04 with bbr. (Recommend, other OS is ok. BBR can perform a better upload traffic.)
 - Nginx
 - Supervisor
 - uwsgi

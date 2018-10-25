@@ -4,13 +4,30 @@
     <div class="uk-alert uk-width-medium-8-10 uk-container-center" data-uk-alert>
         <a href="" class="uk-alert-close uk-close"></a>
         <p>Login success! Please wait a few minutes while game is loading...</p>
+        <button id="fullScreenButton" class="uk-button uk-button-primary">Full Screen (iOS not supported)</button>
     </div>
     <div id="ooi-game" class="uk-align-center">
         <iframe src="{{ scheme }}://{{ host }}/kcs2/index.php?api_root=/kcsapi&amp;voice_root=/kcs/sound&amp;osapi_root=osapi.dmm.com&amp;version=4.2.0.2&amp;api_token={{ token }}&amp;api_starttime={{ starttime }}"
-                id="htmlWrap" scrolling="no" frameborder="0"
+                id="htmlWrap" scrolling="no" frameborder="0" allowfullscreen
                 style="width:1200px; height: 720px; margin: 0px 0px 0px 0px;"></iframe>
     </div>
     <div id="ooi-footer" class="uk-align-center">
-        <a href="/logout" class="uk-button uk-button-primary">Logout</a>
+        <a href="/logout" class="uk-button uk-button-danger">Logout</a>
     </div>
+    <script>
+        function openFullscreen(element) {
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullScreen();
+            }
+        }
+        document.getElementById("fullScreenButton").addEventListener('click', function () {
+            openFullscreen(document.getElementById("ooi-game"));
+        }, false);
+    </script>
 {%- endblock %}

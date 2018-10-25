@@ -51,4 +51,5 @@ A: Don't forcefully redirect HTTP to HTTPS because POI can't catch HTTPS data.
 
 5. Got 'Cannot get DMM token, are you in Japan?' when local debugging.
 
-A: Set `FLASK_ENV` to `development` to debug HTML pages without login into the game.
+A: Set `FLASK_ENV` to `development` and check `Do not start game` on main page
+   to debug HTML pages without login into the game.

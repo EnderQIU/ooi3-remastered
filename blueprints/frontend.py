@@ -137,7 +137,7 @@ def kancolle():
 
     :return: rv
     """
-    if session['test_mode']:
+    if app.config['ENV'] == 'development' and session.get('test_mode', False):
         return debug_kancolle()
 
     token = session.get('api_token', None)
@@ -176,7 +176,7 @@ def kcv():
 
     :return: rv
     """
-    if session['test_mode']:
+    if app.config['ENV'] == 'development' and session.get('test_mode', False):
         return debug_kcv()
 
     token = session.get('api_token', None)
@@ -215,7 +215,7 @@ def flash():
 
     :return: rv
     """
-    if session['test_mode']:
+    if app.config['ENV'] == 'development' and session.get('test_mode', False):
         return debug_flash()
 
     token = session.get('api_token', None)
@@ -258,7 +258,7 @@ def poi():
 
     :return: rv
     """
-    if session['test_mode']:
+    if app.config['ENV'] == 'development' and session.get('test_mode', False):
         return debug_poi()
 
     # Use http for POI
@@ -298,7 +298,7 @@ def connector():
 
     :return: rv
     """
-    if session['test_mode']:
+    if app.config['ENV'] == 'development' and session.get('test_mode', False):
         return debug_connector()
 
     osapi_url = session.get('osapi_url', None)

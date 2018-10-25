@@ -22,7 +22,8 @@
 <div id="ooi-page" class="uk-container uk-container-center">
     <div id="ooi-header" class="uk-grid uk-grid-small">
         <div id="ooi-logo" class="uk-width-medium-1-10 uk-height-1-1">
-            <img src="/static/img/logo.png" style="object-fit: contain; max-width: 100%; max-height: 100%; width: auto; height: auto;">
+            <img src="/static/img/logo.png"
+                 style="object-fit: contain; max-width: 100%; max-height: 100%; width: auto; height: auto;">
         </div>
         <div id="ooi-headline" class="uk-width-medium-9-10">
             <h1 class="uk-text-primary">OOI - Online caching system for Kancolle - <span class="uk-text-muted">Remastered</span>
@@ -34,6 +35,12 @@
         {% block content %}{% endblock %}
     </div>
     <div id="ooi-footer" class="uk-text-center">
+        <hr>
+        <div class="uk-container uk-container-center">
+            <strong>Special thanks to <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">
+                <img style="width: 72px; height: 31px;" src="/static/img/upyun_logo.png"></a>
+            for CDN support</strong>
+        </div>
         <hr>
         <small>API version 4.2.0.2</small>
         <address><a href="http://enderqiu.cn" target="_blank">ブイン基地</a> &copy; 2018</address>

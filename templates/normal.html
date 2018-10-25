@@ -9,7 +9,7 @@
     <div id="ooi-game" class="uk-align-center">
         <iframe src="{{ scheme }}://{{ host }}/kcs2/index.php?api_root=/kcsapi&amp;voice_root=/kcs/sound&amp;osapi_root=osapi.dmm.com&amp;version=4.2.0.2&amp;api_token={{ token }}&amp;api_starttime={{ starttime }}"
                 id="htmlWrap" scrolling="no" frameborder="0" allowfullscreen
-                style="width:1200px; height: 720px; margin: 0px 0px 0px 0px;"></iframe>
+                style="width: 1200px; height: 720px; margin: 0px 0px 0px 0px;"></iframe>
     </div>
     <div id="ooi-footer" class="uk-align-center">
         <a href="/logout" class="uk-button uk-button-danger">Logout</a>
@@ -27,7 +27,7 @@
             }
         }
         document.getElementById("fullScreenButton").addEventListener('click', function () {
-            openFullscreen(document.getElementById("ooi-game"));
+            openFullscreen(document.getElementById("htmlWrap"));
         }, false);
     </script>
 {%- endblock %}

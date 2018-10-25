@@ -24,6 +24,43 @@ def form():
     return render_template('form.html', mode=mode)
 
 
+def test_login(login_id, password, mode):
+    """
+    Test login for local debug.
+    :param login_id:
+    :param password:
+    :param mode:
+    :return:
+    """
+    if login_id and password:
+        if mode in (1, 2, 3):
+            # kancolle_auth = KancolleAuth(login_id, password)
+            try:
+                # kancolle_auth.get_entry()
+                session['api_token'] = 'api_token'
+                session['api_starttime'] = 'api_starttime'
+                session['world_ip'] = 'world_ip'
+                if mode == 2:
+                    return redirect('/kcv')
+                elif mode == 3:
+                    return redirect('/poi')
+                else:
+                    return redirect('/kancolle')
+            except OOIAuthException as e:
+                return render_template('form.html', errmsg=e.message, mode=mode)
+        elif mode == 4:
+            try:
+                # osapi_url = kancolle_auth.get_osapi()
+                session['osapi_url'] = 'osapi_url'
+                return redirect('/connector')
+            except OOIAuthException as e:
+                return render_template('form.html', errmsg=e.message, mode=mode)
+        else:
+            return BadResponse("Invalid mode")
+    else:
+        return render_template('form.html', errmsg='Please input your username and password.', mode=mode)
+
+
 @frontend_bp.route('/', methods=('POST',))
 def login():
     """Login DMM from login form
@@ -34,7 +71,17 @@ def login():
     login_id = post.get('login_id', None)
     password = post.get('password', None)
     mode = int(post.get('mode', 1))
+
+    # Test mode for local debug
+    test_mode = post.get('testMode', False)
+    if test_mode:
+        test_mode = True
+    session['test_mode'] = test_mode
     session['mode'] = mode
+
+    if app.config['ENV'] == 'development' and test_mode:
+        return test_login(login_id, password, mode)
+
     if login_id and password:
         kancolle_auth = KancolleAuth(login_id, password)
         if mode in (1, 2, 3):
@@ -64,6 +111,25 @@ def login():
         return render_template('form.html', errmsg='Please input your username and password.', mode=mode)
 
 
+def test_kancolle():
+    """
+    kancolle page for local debug
+    :return:
+    """
+    token = session.get('api_token', None)
+    starttime = session.get('api_starttime', None)
+    world_ip = session.get('world_ip', None)
+    if token and starttime and world_ip:
+        context = {'scheme': 'http',
+                   'host': '127.0.0.1:5000/static/img/game.png?realSrc=',
+                   'token': token,
+                   'starttime': starttime}
+        return render_template('normal.html', **context)
+    else:
+        session.clear()
+        return redirect('/')
+
+
 @frontend_bp.route('/kancolle', methods=('GET',))
 def kancolle():
     """适配浏览器中进行游戏的页面，该页面会检查会话中是否有api_token、api_starttime和world_ip三个参数，缺少其中任意一个都不能进行
@@ -71,6 +137,9 @@ def kancolle():
 
     :return: rv
     """
+    if session['test_mode']:
+        return test_kancolle()
+
     token = session.get('api_token', None)
     starttime = session.get('api_starttime', None)
     world_ip = session.get('world_ip', None)
@@ -85,6 +154,21 @@ def kancolle():
         return redirect('/')
 
 
+def test_kcv():
+    """
+    kcv page for local debug
+    :return:
+    """
+    token = session.get('api_token', None)
+    starttime = session.get('api_starttime', None)
+    world_ip = session.get('world_ip', None)
+    if token and starttime and world_ip:
+        return render_template('kcv.html', context={})
+    else:
+        session.clear()
+        return redirect('/')
+
+
 @frontend_bp.route('/kcv', methods=('GET',))
 def kcv():
     """适配KanColleViewer或者74EO中进行游戏的页面，提供一个iframe，在iframe中载入游戏FLASH。该页面会检查会话中是否有api_token、
@@ -92,11 +176,33 @@ def kcv():
 
     :return: rv
     """
+    if session['test_mode']:
+        return test_kcv()
+
     token = session.get('api_token', None)
     starttime = session.get('api_starttime', None)
     world_ip = session.get('world_ip', None)
     if token and starttime and world_ip:
         return render_template('kcv.html', context={})
+    else:
+        session.clear()
+        return redirect('/')
+
+
+def test_flash():
+    """
+    flash page for local debug
+    :return:
+    """
+    token = session.get('api_token', None)
+    starttime = session.get('api_starttime', None)
+    world_ip = session.get('world_ip', None)
+    if token and starttime and world_ip:
+        context = {'scheme': 'http',
+                   'host': '127.0.0.1:5000/static/game.png?realSrc=',
+                   'token': token,
+                   'starttime': starttime}
+        return render_template('flash.html', **context)
     else:
         session.clear()
         return redirect('/')
@@ -109,6 +215,28 @@ def flash():
 
     :return: rv
     """
+    if session['test_mode']:
+        return test_flash()
+
+    token = session.get('api_token', None)
+    starttime = session.get('api_starttime', None)
+    world_ip = session.get('world_ip', None)
+    if token and starttime and world_ip:
+        context = {'scheme': 'http',
+                   'host': '127.0.0.1:5000/static/game.png?realSrc=',
+                   'token': token,
+                   'starttime': starttime}
+        return render_template('flash.html', **context)
+    else:
+        session.clear()
+        return redirect('/')
+
+
+def test_poi():
+    """
+    poi page for local test
+    :return:
+    """
     token = session.get('api_token', None)
     starttime = session.get('api_starttime', None)
     world_ip = session.get('world_ip', None)
@@ -117,7 +245,7 @@ def flash():
                    'host': request.host,
                    'token': token,
                    'starttime': starttime}
-        return render_template('flash.html', **context)
+        return render_template('poi.html', **context)
     else:
         session.clear()
         return redirect('/')
@@ -130,6 +258,9 @@ def poi():
 
     :return: rv
     """
+    if session['test_mode']:
+        return test_poi()
+
     # Use http for POI
     if request.scheme == 'https' and app.config['ENV'] == 'production':
         return redirect(url_for('frontend.poi', _scheme="http", _external=True))

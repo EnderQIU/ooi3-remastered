@@ -48,3 +48,7 @@ A: Set the environment variables: `HTTP_PROXY` or `HTTPS_PROXY` e.g. `export HTT
 4. Q: No data caught by POI when start in POI mode using HTTPS?
 
 A: Don't forcefully redirect HTTP to HTTPS because POI can't catch HTTPS data.
+
+5. Got 'Cannot get DMM token, are you in Japan?' when local debugging.
+
+A: Set `FLASK_ENV` to `development` to debug HTML pages without login into the game.

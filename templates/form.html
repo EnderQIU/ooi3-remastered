@@ -26,10 +26,11 @@
                 <span class="uk-form-label">Start in mode：</span>
                 <p>
                     <input type="radio" id="mode1" name="mode" value="1"{% if mode == 1 %} checked{% endif %}>
-                    <label for="mode1">Browser
+                    <label for="mode1">Browser &nbsp;&nbsp;&nbsp;
                         <span class="uk-badge uk-badge-success">HTTPS</span>
                         <span class="uk-badge uk-badge-success">HTML5</span>
                         <span class="uk-badge uk-badge-success">Cache</span>
+                        <span class="uk-badge uk-badge-success">ver: 4.2.0.2</span>
                     </label>
                 </p>
                 <p>
@@ -38,25 +39,34 @@
                         <span class="uk-badge uk-badge-success">HTTPS</span>
                         <span class="uk-badge uk-badge-success">HTML5</span>
                         <span class="uk-badge uk-badge-success">Cache</span>
+                        <span class="uk-badge uk-badge-warning">ver: 4.0.0.0</span>
                     </label>
                 </p>
                 <p>
                     <input type="radio" id="mode3" name="mode" value="3"{% if mode == 3 %} checked{% endif %}>
-                    <label for="mode3">POI
+                    <label for="mode3">POI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="uk-badge uk-badge-warning">HTTP</span>
                         <span class="uk-badge uk-badge-success">HTML5</span>
                         <span class="uk-badge uk-badge-success">Cache</span>
+                        <span class="uk-badge uk-badge-success">ver: 4.2.0.2</span>
                     </label>
                 </p>
                 <p>
                     <input type="radio" id="mode4" name="mode" value="4"{% if mode == 4 %} checked{% endif %}>
-                    <label for="mode4">Direct link
+                    <label for="mode4">Direct link&nbsp;
                         <span class="uk-badge uk-badge-warning">HTTP</span>
                         <span class="uk-badge uk-badge-success">HTML5</span>
                         <span class="uk-badge uk-badge-danger">No Cache</span>
+                        <span class="uk-badge uk-badge-success">ver: newest</span>
                     </label>
                 </p>
             </div>
+            {% if config['ENV'] == 'development' %}
+                <div class="uk-form-row">
+                    <input type="checkbox" id="testMode" name="testMode" value="true">
+                    <label for="testMode">Do not start game (Must set ENV to development)</label>
+                </div>
+            {% endif %}
             <div class="uk-form-row">
                 <button class="uk-button uk-button-primary uk-button-large">Login</button>
             </div>

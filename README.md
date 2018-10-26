@@ -56,7 +56,7 @@ A: Set the environment variables: `HTTP_PROXY` or `HTTPS_PROXY` e.g. `export HTT
 
 A: Don't forcefully redirect HTTP to HTTPS because POI can't catch HTTPS data.
 
-5. Got 'Cannot get DMM token, are you in Japan?' when local debugging.
+5. Got 'Cannot get DMM token, are you in Japan?' while local debugging.
 
 A: Set `FLASK_ENV` to `development` and check `Do not start game` on main page
    to debug HTML pages without login into the game.
@@ -68,6 +68,10 @@ A: The tweepy 3.6.0 uses the keyword `async` in Python 3.7. You can use Python 3
    
 ## Acknowledgement
 Portion of this software may utilize the following copyrighted materials, the use of which is hereby acknowledged.
+
+- [xterm.js](https://xtermjs.org) MIT License
+- [acgx/ooi3](https://github.com/acgx/ooi3) GPLv3 License
+- [ajax-hook](https://github.com/wendux/Ajax-hook)
 
 ## License
 GPLv3 License

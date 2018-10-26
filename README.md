@@ -15,7 +15,7 @@ Online Objects Integration (OOI) system based on flask & requests.
 
 ## About API version
 **Important:** It seems like that the previous API version will be banned after the official server
-maintance except API version 4.0.0.0 as far as I can tell. So please use branch 4.0.0.0 if you are tired
+maintance except API version 4.0.0.0 as far as I can tell. So please use branch old-stable if you are tired
 of updating API version frequently. I'm considering adding API version choices in the next version
 of the ooi3-remastered but that's not the point.
 

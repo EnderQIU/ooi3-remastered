@@ -9,7 +9,17 @@ Online Objects Integration (OOI) system based on flask & requests.
 4. Running in 2nd Sequence (HTML5 game mode).
 5. Embedded kancolle staff twitter off-canvas.
 
+## Main Outlook
+- [ ] Assistant tools embedded on the website page for cross-platform gaming.
+- [ ] Automatic API version update.
+
 ## 4.2.1.0 Branch
+**Important** It seems like that the previous API version will be banned after the official server
+maintance except API version 4.0.0.0 as far as I can tell. So please use branch 4.0.0.0 if you are tired
+of updating API version frequently. I'm considering adding API version choices in the next version
+of the ooi3-remastered but that's not the point.
+
+
 This branch use API version 4.2.1.0 and its default iframe plugin is html5 which is 
 supported by all modern desktop and mobile devices. Since it's a new API version, I'm quite
 not sure what would happen under it. Any issue or pull requests are welcomed.

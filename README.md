@@ -20,7 +20,7 @@ of updating API version frequently. I'm considering adding API version choices i
 of the ooi3-remastered but that's not the point.
 
 
-This branch use API version 4.2.1.0 and its default iframe plugin is html5 which is 
+This branch is using API version 4.2.1.0 and its default iframe plugin is html5 which is 
 supported by all modern desktop and mobile devices. Since it's a new API version, I'm quite
 not sure what would happen under it. Any issue or pull requests are welcomed.
 

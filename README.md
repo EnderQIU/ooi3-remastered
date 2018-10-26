@@ -1,4 +1,4 @@
-![Header](https://raw.githubusercontent.com/EnderQIU/ooi3-remastered/4.2.1.0/static/img/logo.png)
+![Header](https://raw.githubusercontent.com/EnderQIU/ooi3-remastered/master/static/img/logo.png)
 # OOI v3 Remastered
 Online Objects Integration (OOI) system based on flask & requests.
 

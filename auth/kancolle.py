@@ -218,14 +218,14 @@ class KancolleAuth:
         self.st = qs['st'][0]
         url = self.urls['get_world'] % (self.owner, int(time.time()*1000))
         self.session.headers['Referer'] = self.osapi_url
-        response = self._request(url, timeout_message='Connection timeout when looking for Jinjufu')
+        response = self._request(url, timeout_message='Connection timeout when looking for Jinjufu.')
         html = response.text
         svdata = json.loads(html[7:])
         if svdata['api_result'] == 1:
             self.world_id = svdata['api_data']['api_world_id']
             self.world_ip = self.world_ip_list[self.world_id-1]
         else:
-            raise OOIAuthException('Server error when looking for Jinjufu')
+            raise OOIAuthException('Server error when looking for Jinjufu. Maybe the official sever is under maintaince.')
 
         return self.world_id, self.world_ip, self.st
 

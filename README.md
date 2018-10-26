@@ -5,9 +5,15 @@ Online Objects Integration (OOI) system based on flask & requests.
 1. Updated various of python packages.
 2. Flask-caching static files with redis.
 
-## 4.0.0.0 Branch
-This branch use API version 4.0.0.0 and the default embed plugin is Flash Player which not support iOS devices.
-Please checkout the newest branch for a better experience.
+## API version
+**Important:** It seems like that the previous API version will be banned after the official server maintance except API version 4.0.0.0 as far as I can tell. So please use branch 4.0.0.0 if you are tired of updating API version frequently. I'm considering adding API version choices in the next version of the ooi3-remastered but that's not the point.
+
+
+This branch use API version 4.0.0.0 and the default embed plugin is Flash Player
+ which not support iOS devices. It will **not be updated** in the future but it
+ is convinient for those who just looks for the stable service. So I decided to 
+ keep this branch.
+If you are looking for new features, Please checkout the newest branch for a better experience.
 
 ## Trouble Shooter
 1. Q: Any *Permission Denied* error:

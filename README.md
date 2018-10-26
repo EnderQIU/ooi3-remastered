@@ -9,10 +9,11 @@ Online Objects Integration (OOI) system based on flask & requests.
 4. Running in 2nd Sequence (HTML5 game mode).
 5. Embedded kancolle staff twitter off-canvas.
 
-## 4.2.0.2 Branch
-This branch use API version 4.2.0.2 and its default iframe plugin is html5 which is 
+## ~~4.2.0.2 Branch~~ Deprecated
+~~This branch use API version 4.2.0.2 and its default iframe plugin is html5 which is 
 supported by all modern desktop and mobile devices. Since it's a new API version, I'm quite
-not sure what would happen under it. Any issue or pull requests are welcomed.
+not sure what would happen under it. Any issue or pull requests are welcomed.~~
+This branch is deprecated. Please checkout 4.2.1.0 branch.
 
 ## Demo Website
 You can visit this [demo website](https://ooi.enderqiu.cn/) to preview all features (HTTPS supported).

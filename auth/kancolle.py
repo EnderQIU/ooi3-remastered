@@ -249,7 +249,7 @@ class KancolleAuth:
         response = self._request(self.urls['make_request'],
                                  method='POST',
                                  data=data,
-                                 timeout_message='Connection timeout when requesting token for entering the Jinjufu.')
+                                 timeout_message='Connection timeout when requesting token for entering the Jinjufu. Maybe the official sever is under maintaince.')
         html = response.text
         svdata = json.loads(html[27:])
         if svdata[url]['rc'] != 200:

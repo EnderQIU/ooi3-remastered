@@ -3,11 +3,12 @@ import json
 
 import click
 import requests
-from flask import Response
+from flask import Response, render_template
 from requests import Timeout
+from htmlmin.main import minify
 
 from base import config
-from app import cache
+from app import cache, app
 
 
 class BadResponse(Response):
@@ -88,3 +89,18 @@ class NonCachedStaticResponse(Response):
         self.data = resp.content
         self.status_code = resp.status_code
         self.headers = headers
+
+
+def render_minify_template(template_name_or_list, enable_minify=False, **context):
+    """
+    Use this method will minify the templates when 'ENV' is set 'to production'
+     or the 'enable_minify' parameter is set to True
+    :param template_name_or_list:
+    :param enable_minify: whether to minify the rendered templates
+    :param context:
+    :return:
+    """
+    if enable_minify or app.config['ENV'] == 'production':
+        return minify(render_template(template_name_or_list, **context))
+    else:
+        return render_template(template_name_or_list, **context)

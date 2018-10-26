@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content -%}
-    <div class="uk-alert uk-width-medium-8-10 uk-container-center" data-uk-alert>
-        <a href="" class="uk-alert-close uk-close"></a>
+    <div class="uk-alert uk-container-center" data-uk-alert>
         <p>Login success! Please wait a few minutes while game is loading...</p>
-        <button id="fullScreenButton" class="uk-button uk-button-primary">Activate Full Screen (iOS not supported)</button>
+        <button id="fullScreenButton" class="uk-button uk-button-primary">Activate Full Screen (iOS not supported)
+        </button>
+        <button class="uk-button uk-button-success" data-uk-modal="{target:'#ooi-console'}">OOI Console (Coming soon!)
+        </button>
     </div>
     <div id="ooi-game" class="uk-align-center">
         <iframe src="{{ scheme }}://{{ host }}/kcs2/index.php?api_root=/kcsapi&amp;voice_root=/kcs/sound&amp;osapi_root=osapi.dmm.com&amp;version=4.2.0.2&amp;api_token={{ token }}&amp;api_starttime={{ starttime }}"
@@ -14,20 +16,17 @@
     <div id="ooi-footer" class="uk-align-center">
         <a href="/logout" class="uk-button uk-button-danger">Logout</a>
     </div>
-    <script>
-        function openFullscreen(element) {
-            if (element.requestFullscreen) {
-                element.requestFullscreen();
-            } else if (element.mozRequestFullScreen) {
-                element.mozRequestFullScreen();
-            } else if (element.msRequestFullscreen) {
-                element.msRequestFullscreen();
-            } else if (element.webkitRequestFullscreen) {
-                element.webkitRequestFullScreen();
-            }
-        }
-        document.getElementById("fullScreenButton").addEventListener('click', function () {
-            openFullscreen(document.getElementById("htmlWrap"));
-        }, false);
-    </script>
+    <div id="ooi-console" class="uk-modal">
+        <div class="uk-modal-dialog">
+            <a class="uk-modal-close uk-close"></a>
+            <link href="/static/css/xterm.css" rel="stylesheet">
+            <div id="debugTerminal"></div>
+        </div>
+    </div>
+    <div class="ooi-extra-script">
+        <script src="/static/js/ajaxhook.min.js?version=1810261"></script>
+        <script src="/static/js/xterm.js?version=1810261"></script>
+        <script src="/static/js/ooi-xhrhook.js?version=1810261"></script>
+        <script src="/static/js/ooi-fullscreen.js?version=1810261"></script>
+    </div>
 {%- endblock %}

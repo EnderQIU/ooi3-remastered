@@ -76,7 +76,7 @@
         <h2 class="uk-text-primary">NOTICE</h2>
         <p>This website uses the Online Objects Integration system which is an online caching system for DMM web
             game <q>Kantai Collection (艦隊これくしょん -艦これ)</q></p>
-        <p>This website only support login with the origin DMM account. All third-party authentications 
+        <p>This website only support login with the origin DMM account. All third-party authentications
             (Google and Facebook) are not supported.</p>
         <p class="uk-text-warning">This website does not store any user information and is not responsible for any
             consequences that may be caused by the services of this website.</p>
@@ -87,5 +87,19 @@
         <p>The source code of this website is published in <a href="https://github.com/EnderQIU/ooi3-remastered"
                                                               target="_blank">this repository </a>and is open sourced
             under the GPLv3 license.</p>
+        <button class="uk-button uk-button-dropdown uk-button-large uk-align-right"
+                data-uk-offcanvas="{target:'#ooi-kancolle-staff-tweets'}">
+            <i class="uk-icon uk-icon-hover uk-icon-twitter">Kancolle Staff Twitter</i>
+        </button>
     </div>
+    <div id="ooi-kancolle-staff-tweets" class="uk-offcanvas">
+        <div class="uk-offcanvas-bar uk-offcanvas-bar-flip">
+            <div id= "kancolle-staff-tweets-list" class="uk-container" style="padding: 0">
+                <div id="loading" class="uk-container uk-container-center">
+                    <i class="uk-icon-refresh uk-icon-spin"></i><strong> Loading...</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/tweets.js?version=1810261"></script>
 {%- endblock %}

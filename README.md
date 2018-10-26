@@ -7,6 +7,7 @@ Online Objects Integration (OOI) system based on flask & requests.
 2. Flask-caching static files with redis.
 3. HTTPS Supported.
 4. Running in 2nd Sequence (HTML5 game mode).
+5. Embedded kancolle staff twitter off-canvas.
 
 ## 4.2.0.2 Branch
 This branch use API version 4.2.0.2 and its default iframe plugin is html5 which is 
@@ -29,6 +30,15 @@ about some security problems.
 ## Deploy
 Please refer to the config files in the `deploy/` directory.
 
+Following four environment variables should be set if use the tweets feature.
+
+| KEY                | VALUE                                      |
+| :----------------- | :----------------------------------------- |
+| ACCESS_KEY         | Consumer API key for twitter developers    |
+| SECRET_KEY         | Consumer API secret for twitter developers |
+| ACCESS_TOKEN       | Access token for twitter developers        |
+| TOKEN_SECRET       | Token secret for twitter developers        |
+
 ## Trouble Shooter
 1. Q: Any *Permission Denied* error:
 
@@ -50,3 +60,14 @@ A: Don't forcefully redirect HTTP to HTTPS because POI can't catch HTTPS data.
 
 A: Set `FLASK_ENV` to `development` and check `Do not start game` on main page
    to debug HTML pages without login into the game.
+   
+6. Q: Got `SyntaxError: invalid syntax` when `import tweepy` from tweepy 3.6.0.
+
+A: The tweepy 3.6.0 uses the keyword `async` in Python 3.7. You can use Python 3.6 or former. Or you can replace 
+   all `async` variables in tweepy/streaming.py to _async or something else.
+   
+## Acknowledgement
+Portion of this software may utilize the following copyrighted materials, the use of which is hereby acknowledged.
+
+## License
+GPLv3 License

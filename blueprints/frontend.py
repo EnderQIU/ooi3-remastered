@@ -1,11 +1,12 @@
 """OOI3的前端部分，用于显示各种页面。
 包含了登录表单、登录后的跳转、不同的游戏运行模式和注销页面。
 """
-from flask import render_template, redirect, Blueprint, session, request, url_for
+from flask import redirect, Blueprint, session, request, url_for
 
 from app import app
 from auth.kancolle import KancolleAuth, OOIAuthException
-from base.response import BadResponse
+from base.response import BadResponse, render_minify_template, JsonResponse
+from base.twitter import TwitterAPI
 
 frontend_bp = Blueprint('frontend', __name__)
 
@@ -21,7 +22,7 @@ def form():
     else:
         session['mode'] = 1
         mode = 1
-    return render_template('form.html', mode=mode)
+    return render_minify_template('form.html', mode=mode)
 
 
 def debug_login(login_id, password, mode):
@@ -47,18 +48,18 @@ def debug_login(login_id, password, mode):
                 else:
                     return redirect('/kancolle')
             except OOIAuthException as e:
-                return render_template('form.html', errmsg=e.message, mode=mode)
+                return render_minify_template('form.html', errmsg=e.message, mode=mode)
         elif mode == 4:
             try:
                 # osapi_url = kancolle_auth.get_osapi()
                 session['osapi_url'] = 'osapi_url'
                 return redirect('/connector')
             except OOIAuthException as e:
-                return render_template('form.html', errmsg=e.message, mode=mode)
+                return render_minify_template('form.html', errmsg=e.message, mode=mode)
         else:
             return BadResponse("Invalid mode")
     else:
-        return render_template('form.html', errmsg='Please input your username and password.', mode=mode)
+        return render_minify_template('form.html', errmsg='Please input your username and password.', mode=mode)
 
 
 @frontend_bp.route('/', methods=('POST',))
@@ -97,18 +98,18 @@ def login():
                 else:
                     return redirect('/kancolle')
             except OOIAuthException as e:
-                return render_template('form.html', errmsg=e.message, mode=mode)
+                return render_minify_template('form.html', errmsg=e.message, mode=mode)
         elif mode == 4:
             try:
                 osapi_url = kancolle_auth.get_osapi()
                 session['osapi_url'] = osapi_url
                 return redirect('/connector')
             except OOIAuthException as e:
-                return render_template('form.html', errmsg=e.message, mode=mode)
+                return render_minify_template('form.html', errmsg=e.message, mode=mode)
         else:
             return BadResponse("Invalid mode")
     else:
-        return render_template('form.html', errmsg='Please input your username and password.', mode=mode)
+        return render_minify_template('form.html', errmsg='Please input your username and password.', mode=mode)
 
 
 def debug_kancolle():
@@ -120,11 +121,11 @@ def debug_kancolle():
     starttime = session.get('api_starttime', None)
     world_ip = session.get('world_ip', None)
     if token and starttime and world_ip:
-        context = {'scheme': 'http',
-                   'host': '127.0.0.1:5000/static/img/game.png?realSrc=',
+        context = {'scheme': request.scheme,
+                   'host': request.host + '/static/img/game.png?realSrc=',
                    'token': token,
                    'starttime': starttime}
-        return render_template('normal.html', **context)
+        return render_minify_template('normal.html', **context)
     else:
         session.clear()
         return redirect('/')
@@ -148,7 +149,7 @@ def kancolle():
                    'host': request.host,
                    'token': token,
                    'starttime': starttime}
-        return render_template('normal.html', **context)
+        return render_minify_template('normal.html', **context)
     else:
         session.clear()
         return redirect('/')
@@ -163,7 +164,7 @@ def debug_kcv():
     starttime = session.get('api_starttime', None)
     world_ip = session.get('world_ip', None)
     if token and starttime and world_ip:
-        return render_template('kcv.html', context={})
+        return render_minify_template('kcv.html', context={})
     else:
         session.clear()
         return redirect('/')
@@ -183,7 +184,7 @@ def kcv():
     starttime = session.get('api_starttime', None)
     world_ip = session.get('world_ip', None)
     if token and starttime and world_ip:
-        return render_template('kcv.html', context={})
+        return render_minify_template('kcv.html', context={})
     else:
         session.clear()
         return redirect('/')
@@ -198,11 +199,11 @@ def debug_flash():
     starttime = session.get('api_starttime', None)
     world_ip = session.get('world_ip', None)
     if token and starttime and world_ip:
-        context = {'scheme': 'http',
-                   'host': '127.0.0.1:5000/static/game.png?realSrc=',
+        context = {'scheme': request.scheme,
+                   'host': request.host + '/static/img/game.png?realSrc=',
                    'token': token,
                    'starttime': starttime}
-        return render_template('flash.html', **context)
+        return render_minify_template('flash.html', **context)
     else:
         session.clear()
         return redirect('/')
@@ -226,7 +227,7 @@ def flash():
                    'host': request.host,
                    'token': token,
                    'starttime': starttime}
-        return render_template('flash.html', **context)
+        return render_minify_template('flash.html', **context)
     else:
         session.clear()
         return redirect('/')
@@ -241,11 +242,11 @@ def debug_poi():
     starttime = session.get('api_starttime', None)
     world_ip = session.get('world_ip', None)
     if token and starttime and world_ip:
-        context = {'scheme': 'http',
-                   'host': '127.0.0.1:5000/static/game.png?realSrc=',
+        context = {'scheme': request.scheme,
+                   'host': request.host + '/static/img/game.png?realSrc=',
                    'token': token,
                    'starttime': starttime}
-        return render_template('poi.html', **context)
+        return render_minify_template('poi.html', **context)
     else:
         session.clear()
         return redirect('/')
@@ -272,7 +273,7 @@ def poi():
                    'host': request.host,
                    'token': token,
                    'starttime': starttime}
-        return render_template('poi.html', **context)
+        return render_minify_template('poi.html', **context)
     else:
         session.clear()
         return redirect('/')
@@ -286,7 +287,7 @@ def debug_connector():
     osapi_url = session.get('osapi_url', None)
     if osapi_url:
         context = {'osapi_url': osapi_url}
-        return render_template('connector.html', **context)
+        return render_minify_template('connector.html', **context)
     else:
         session.clear()
         return redirect('/')
@@ -304,7 +305,7 @@ def connector():
     osapi_url = session.get('osapi_url', None)
     if osapi_url:
         context = {'osapi_url': osapi_url}
-        return render_template('connector.html', **context)
+        return render_minify_template('connector.html', **context)
     else:
         session.clear()
         return redirect('/')
@@ -319,3 +320,13 @@ def logout():
     """
     session.clear()
     return redirect('/')
+
+
+@frontend_bp.route('/twitter', methods=('GET', ))
+def twitter():
+    """
+    Get most preview 20 tweets from Kancolle Staff's twitter
+    :return:
+    """
+    twitter_api = TwitterAPI()
+    return JsonResponse(twitter_api.get_official_20tweets())

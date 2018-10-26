@@ -13,7 +13,7 @@ Online Objects Integration (OOI) system based on flask & requests.
 - [ ] Assistant tools embedded on the website page for cross-platform gaming.
 - [ ] Automatic API version update.
 
-## 4.2.1.0 Branch
+## About API version
 **Important:** It seems like that the previous API version will be banned after the official server
 maintance except API version 4.0.0.0 as far as I can tell. So please use branch 4.0.0.0 if you are tired
 of updating API version frequently. I'm considering adding API version choices in the next version

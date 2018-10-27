@@ -1,6 +1,6 @@
 ![Header](https://raw.githubusercontent.com/EnderQIU/ooi3-remastered/master/static/img/logo.png)
 # OOI v3 Remastered
-Online Objects Integration (OOI) system based on flask & requests.
+> Online Objects Integration (OOI) system based on flask & requests.
 
 ## Features
 1. Updated various of python packages.

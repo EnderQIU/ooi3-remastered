@@ -16,10 +16,10 @@ you deploy this site on the VPS owned by yourself with HTTPS if you are worried 
 problems.
 
 ## Deployment
-See the [Wiki](https://github.com/EnderQIU/ooi3-remastered/wiki) page.
+See details in the [Wiki](https://github.com/EnderQIU/ooi3-remastered/wiki) page.
 
 ## TODO
-See the [Projects](https://github.com/EnderQIU/ooi3-remastered/projects) page.
+See details in the [Projects](https://github.com/EnderQIU/ooi3-remastered/projects) page.
 
 ## Acknowledgement
 Portion of this software may utilize the following copyrighted materials, the use of which is hereby acknowledged.

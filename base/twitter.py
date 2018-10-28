@@ -1,24 +1,24 @@
 import click
 import tweepy
 
-from app import app
+from app import app, cache
 
 
 class TwitterAPI:
     """
     Twitter API
     """
-    consumer_api_key = app.config['API_KEY']  #'YmYSBd13s2d2uJQuAytFwQbfP'
-    consumer_secret_key = app.config['SECRET_KEY']  #'H5KHaGDiqzPT5nzBoSb8JKkhYlWfL8Fe1WZy1ja7vD6sUyWdPD'
-    access_token = app.config['ACCESS_TOKEN']  #'909587479-Ifa3YUPV7cRNMlhpsXH0QBQ4qtIpPQUqrxnLhxib'
-    access_token_secret = app.config['TOKEN_SECRET']  #'PlYaPZrbGOMpgFRvAaxS7DG3sIHwi6EiWrmcdIyfqyghA'
+    consumer_api_key = app.config['API_KEY']
+    consumer_secret_key = app.config['SECRET_KEY']
+    access_token = app.config['ACCESS_TOKEN']
+    access_token_secret = app.config['TOKEN_SECRET']
 
     auth = tweepy.OAuthHandler(consumer_api_key, consumer_secret_key)
     auth.set_access_token(access_token, access_token_secret)
 
     api = tweepy.API(auth)
 
-
+    @cache.memoize(600)
     def get_official_20tweets(self):
         """
         Get previous 20 tweets

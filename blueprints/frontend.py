@@ -5,8 +5,7 @@ from flask import redirect, Blueprint, session, request, url_for
 
 from app import app
 from auth.kancolle import KancolleAuth, OOIAuthException
-from base.response import BadResponse, render_minify_template, JsonResponse
-from base.twitter import TwitterAPI
+from base.response import BadResponse, render_minify_template
 
 frontend_bp = Blueprint('frontend', __name__)
 
@@ -46,7 +45,7 @@ def debug_login(login_id, password, mode):
                 elif mode == 3:
                     return redirect('/poi')
                 else:
-                    return redirect('/kancolle')
+                    return redirect('/browser')
             except OOIAuthException as e:
                 return render_minify_template('form.html', errmsg=e.message, mode=mode)
         elif mode == 4:
@@ -96,7 +95,7 @@ def login():
                 elif mode == 3:
                     return redirect('/poi')
                 else:
-                    return redirect('/kancolle')
+                    return redirect('/browser')
             except OOIAuthException as e:
                 return render_minify_template('form.html', errmsg=e.message, mode=mode)
         elif mode == 4:
@@ -112,7 +111,7 @@ def login():
         return render_minify_template('form.html', errmsg='Please input your username and password.', mode=mode)
 
 
-def debug_kancolle():
+def debug_browser():
     """
     kancolle page for local debug
     :return:
@@ -125,21 +124,21 @@ def debug_kancolle():
                    'host': request.host + '/static/img/game.png?realSrc=',
                    'token': token,
                    'starttime': starttime}
-        return render_minify_template('normal.html', **context)
+        return render_minify_template('browser.html', **context)
     else:
         session.clear()
         return redirect('/')
 
 
-@frontend_bp.route('/kancolle', methods=('GET',))
-def kancolle():
+@frontend_bp.route('/browser', methods=('GET',))
+def browser():
     """适配浏览器中进行游戏的页面，该页面会检查会话中是否有api_token、api_starttime和world_ip三个参数，缺少其中任意一个都不能进行
     游戏，跳转回登录页面。
 
     :return: rv
     """
     if app.config['ENV'] == 'development' and session.get('test_mode', False):
-        return debug_kancolle()
+        return debug_browser()
 
     token = session.get('api_token', None)
     starttime = session.get('api_starttime', None)
@@ -149,7 +148,7 @@ def kancolle():
                    'host': request.host,
                    'token': token,
                    'starttime': starttime}
-        return render_minify_template('normal.html', **context)
+        return render_minify_template('browser.html', **context)
     else:
         session.clear()
         return redirect('/')
@@ -320,13 +319,3 @@ def logout():
     """
     session.clear()
     return redirect('/')
-
-
-@frontend_bp.route('/twitter', methods=('GET', ))
-def twitter():
-    """
-    Get most preview 20 tweets from Kancolle Staff's twitter
-    :return:
-    """
-    twitter_api = TwitterAPI()
-    return JsonResponse(twitter_api.get_official_20tweets())

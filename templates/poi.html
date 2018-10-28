@@ -1,43 +1,23 @@
-<!DOCTYPE html>
-<html lang="zh-Hans-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="kantai collection, kancolle, 艦隊これくしょん, 艦これ">
-    <title>OOI - Online caching system for Kancolle - Remastered</title>
-    <link href="/static/css/uikit.min.css?version=1810261" rel="stylesheet">
-    <link href="/static/css/uikit.almost-flat.min.css?version=1810261" rel="stylesheet">
-    <link href="/static/css/ooi.css?version=1810261" rel="stylesheet">
-    <script src="/static/js/jquery-2.1.4.min.js?version=1810261"></script>
-    <script src="/static/js/uikit.min.js?version=1810261"></script>
-    <style type="text/css">
-        html, body {
-            overflow: hidden;
-        }
+{% extends 'base.html' %}
 
-        #htmlWrap {
-            width: 1200px;
-            height: 720px;
-            position: absolute;
-        }
-    </style>
-</head>
-<body>
-<div id="flashWrap">
-    <div id="ooi-game">
-        <iframe src="{{ scheme }}://{{ host }}/kcs2/index.php?api_root=/kcsapi&amp;voice_root=/kcs/sound&amp;osapi_root=osapi.dmm.com&amp;version=4.2.1.0&amp;api_token={{ token }}&amp;api_starttime={{ starttime }}"
-                id="htmlWrap" scrolling="no" frameborder="0"
-                style="width:1200px; height: 720px; margin: 0px 0px 0px 0px;"></iframe>
+{% block extra_js %}
+    {% assets 'poi_js' %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+{% endblock %}
+
+{% block extra_css %}
+    {% assets 'poi_css' %}
+        <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+{% endblock %}
+
+{% block content %}
+    <div id="flashWrap">
+        <div id="ooi-game">
+            <iframe src="{{ scheme }}://{{ host }}/kcs2/index.php?api_root=/kcsapi&amp;voice_root=/kcs/sound&amp;osapi_root=osapi.dmm.com&amp;version=4.2.1.0&amp;api_token={{ token }}&amp;api_starttime={{ starttime }}"
+                    id="htmlWrap" scrolling="no" frameborder="0"
+                    style="width:1200px; height: 720px; margin: 0 0 0 0;"></iframe>
+        </div>
     </div>
-</div>
-<script>
-    $(function () {
-        var htmlWrap = $("#htmlWrap");
-        htmlWrap.css("width", "100%");
-        htmlWrap.css("height", "100%");
-        htmlWrap.css("margin", "0");
-    });
-</script>
-</body>
-</html>
+{% endblock %}

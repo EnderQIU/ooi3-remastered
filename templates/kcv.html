@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block content -%}
+{% block content %}
     <div class="uk-alert uk-width-medium-8-10 uk-container-center" data-uk-alert>
         <a href="" class="uk-alert-close uk-close"></a>
         <p>Login success! Please open kcv and wait a few minutes while game is loading...</p>
@@ -9,6 +9,6 @@
         <iframe id="game_frame" src="/flash" width="1280" height="800" frameborder="0" scrolling="no"></iframe>
     </div>
     <div id="ooi-footer" class="uk-align-center">
-        <a href="/logout" class="uk-button uk-button-primary">Logout</a>
+        <a href="{{ url_for("frontend.logout") }}" class="uk-button uk-button-primary">Logout</a>
     </div>
-{%- endblock %}
+{% endblock %}

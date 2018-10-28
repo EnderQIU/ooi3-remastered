@@ -1,0 +1,9 @@
+html, body {
+    overflow: hidden;
+}
+
+#htmlWrap {
+    width: 1200px;
+    height: 720px;
+    position: absolute;
+}

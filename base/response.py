@@ -91,7 +91,7 @@ class NonCachedStaticResponse(Response):
         self.headers = headers
 
 
-def render_minify_template(template_name_or_list, enable_minify=False, **context):
+def render_minify_template(template_name_or_list, **context):
     """
     Use this method will minify the templates when 'ENV' is set 'to production'
      or the 'enable_minify' parameter is set to True
@@ -100,7 +100,7 @@ def render_minify_template(template_name_or_list, enable_minify=False, **context
     :param context:
     :return:
     """
-    if enable_minify or app.config['ENV'] == 'production':
+    if app.config['ENABLE_MINIFY'] or app.config['ENV'] == 'production':
         return minify(render_template(template_name_or_list, **context))
     else:
         return render_template(template_name_or_list, **context)

@@ -470,3 +470,6 @@ static/.webassets-cache/
 
 # dist static files
 static/dist/
+
+# pytest cache
+.pytest_cache/

@@ -17,20 +17,6 @@
     {% assets "base_js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
-    {% if config.ENV == 'production' %}
-    <!-- Global Site Tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-99600152-2"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'UA-99600152-2');
-    </script>
-    {% endif %}
 </head>
 <body>
 <div id="ooi-page" class="uk-container uk-container-center">

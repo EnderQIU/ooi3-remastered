@@ -4,14 +4,14 @@ bundles = {
     # base.html
     'base_js': Bundle(
         'js/vendor/jquery/jquery-3.3.1.js',
-        'js/vendor/uikit/uikit.min.js',
+        'js/vendor/uikit/uikit.js',
         'js/ooi-base.js',
         output='dist/base.js',
         filters='jsmin',
     ),
     'base_css': Bundle(
-        'css/vendor/uikit/uikit.min.css',
-        'css/vendor/uikit/uikit.almost-flat.min.css',
+        'css/vendor/uikit/uikit.css',
+        'css/vendor/uikit/uikit.almost-flat.css',
         'css/ooi-base.css',
         output='dist/base.css',
         filters='cssmin',

@@ -20,14 +20,17 @@ app.config['TOKEN_SECRET'] = os.environ.get('TOKEN_SECRET', None)
 
 # Minify HTML
 app.config['ENABLE_MINIFY'] = os.environ.get('ENABLE_MINIFY', False)
-if app.config['ENABLE_MINIFY']:
+if app.config['ENABLE_MINIFY'] == 'yes':
     app.config['ENABLE_MINIFY'] = True
+else:
+    app.config['ENABLE_MINIFY'] = False
 
 # Web Assets Debug
 app.config['ASSETS_DEBUG'] = os.environ.get('ASSETS_DEBUG', False)
-if app.config['ASSETS_DEBUG'] or app.config['ENV'] == 'development':
+if app.config['ASSETS_DEBUG'] == 'yes' or app.config['ENV'] == 'development':
     app.config['ASSETS_DEBUG'] = True
-
+else:
+    app.config['ASSETS_DEBUG'] = False
 
 def register_blueprints():
     from blueprints.api import api_bp

@@ -10,6 +10,17 @@
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon">
     <link href="{{ url_for("static", filename="img/logo.png") }}" sizes="128x128"
           rel="apple-touch-icon-precomposed">
+    {% if config.ENV == 'production' %}
+        <script async>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?8cf523dcf6dc22c6079984e9bc3c9fd7";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    {% endif %}
     {% assets "base_css" %}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
@@ -39,7 +50,8 @@
         <div class="uk-container uk-container-center">
             <strong>Specially thanks to <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"
                                            target="_blank">
-                <img style="width: 72px; height: 31px;" src="{{ url_for("static", filename="img/upyun_logo.png") }}"></a>
+                <img style="width: 72px; height: 31px;"
+                     src="{{ url_for("static", filename="img/upyun_logo.png") }}"></a>
                 for CDN support</strong>
         </div>
         <hr>

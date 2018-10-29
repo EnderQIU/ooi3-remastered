@@ -1,5 +1,8 @@
 ![Header](https://raw.githubusercontent.com/EnderQIU/ooi3-remastered/master/static/img/logo.png)
 # OOI v3 Remastered
+[![CircleCI](https://circleci.com/gh/EnderQIU/ooi3-remastered/tree/master.svg?style=svg)](https://circleci.com/gh/EnderQIU/ooi3-remastered/tree/master)
+
+
 > Online Objects Integration (OOI) system based on flask & requests.
 
 ## Features

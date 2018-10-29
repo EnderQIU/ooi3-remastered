@@ -30,6 +30,7 @@ Portion of this software may utilize the following copyrighted materials, the us
 
 - [xterm.js](https://xtermjs.org) MIT License
 - [acgx/ooi3](https://github.com/acgx/ooi3) GPLv3 License
+- [js-mobile-console](https://github.com/B1naryStudio/js-mobile-console) MIT License
 
 ## License
 GPLv3 License

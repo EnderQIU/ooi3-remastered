@@ -8,10 +8,10 @@ class TwitterAPI:
     """
     Twitter API
     """
-    consumer_api_key = app.config['API_KEY']
-    consumer_secret_key = app.config['SECRET_KEY']
-    access_token = app.config['ACCESS_TOKEN']
-    access_token_secret = app.config['TOKEN_SECRET']
+    consumer_api_key = app.config['TWITTER_API_KEY']
+    consumer_secret_key = app.config['TWITTER_SECRET_KEY']
+    access_token = app.config['TWITTER_ACCESS_TOKEN']
+    access_token_secret = app.config['TWITTER_TOKEN_SECRET']
 
     auth = tweepy.OAuthHandler(consumer_api_key, consumer_secret_key)
     auth.set_access_token(access_token, access_token_secret)

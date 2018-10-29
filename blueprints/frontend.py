@@ -121,13 +121,24 @@ def debug_browser():
     world_ip = session.get('world_ip', None)
     if token and starttime and world_ip:
         context = {'scheme': request.scheme,
-                   'host': request.host + '/static/img/game.png?realSrc=',
+                   'host': request.host + '/js_mobile_console?realSrc=',
                    'token': token,
-                   'starttime': starttime}
+                   'starttime': starttime,
+                   'local_debug': 'yes',
+                   }
         return render_minify_template('browser.html', **context)
     else:
         session.clear()
         return redirect('/')
+
+
+@frontend_bp.route('/js_mobile_console', methods=('GET',))
+def debug_js_mobile_console():
+    """
+    Embedded page for local debug
+    :return:
+    """
+    return render_minify_template("js_mobile_console.html")
 
 
 @frontend_bp.route('/browser', methods=('GET',))

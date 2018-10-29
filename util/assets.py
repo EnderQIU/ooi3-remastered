@@ -24,7 +24,6 @@ bundles = {
     ),
     # browser.html
     'browser_js': Bundle(
-        'js/vendor/ajaxhook/ajaxhook.min.js',
         'js/vendor/xterm/xterm.js',
         'js/ooi-xhrhook.js',
         'js/ooi-fullscreen.js',
@@ -45,6 +44,18 @@ bundles = {
     'poi_css': Bundle(
         'css/ooi-poi.css',
         output='dist/poi.css',
+        filters='cssmin',
+    ),
+    # js_mobile_console.html
+    'js-mobile-console_js': Bundle(
+        'js/vendor/axios/axios.min.js',
+        'js/vendor/js-mobile-console/mobile-console.js',
+        output='dist/js-mobile-console.js',
+        filters='jsmin',
+    ),
+    'js-mobile-console_css': Bundle(
+        'css/vendor/js-mobile-console/mobile-console.css',
+        output='dist/js-mobile-console.css',
         filters='cssmin',
     ),
 }

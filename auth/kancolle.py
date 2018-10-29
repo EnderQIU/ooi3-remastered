@@ -8,6 +8,7 @@ import os
 from urllib.parse import urlparse, parse_qs
 
 from auth.exceptions import OOIAuthException
+from app import app
 
 
 class KancolleAuth:
@@ -25,9 +26,9 @@ class KancolleAuth:
                      '?api_root=/kcsapi'
                      '&voice_root=/kcs/sound'
                      '&osapi_root=osapi.dmm.com'
-                     '&version=4.2.1.0'
+                     '&version={api_version}'
                      '&api_token=%s'
-                     '&api_starttime=%d'}
+                     '&api_starttime=%d'.format(api_version=app.config['API_VERSION'])}
 
     # 各镇守府的IP列表
     world_ip_list = (

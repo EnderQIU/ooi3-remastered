@@ -32,6 +32,10 @@ if app.config['ASSETS_DEBUG'] == 'yes' or app.config['ENV'] == 'development':
 else:
     app.config['ASSETS_DEBUG'] = False
 
+# API version
+app.config['API_VERSION'] = os.environ.get('API_VERSION')
+
+
 def register_blueprints():
     from blueprints.api import api_bp
     from blueprints.cdn import cdn_bp

@@ -15,10 +15,13 @@ def client():
 
 
 def test_index(client):
-    """Start with a blank database."""
+    """
+    Test the index page whether loaded normally
+    :param client:
+    """
 
     rv = client.get('/')
-    if b'OOI' in rv.data:
+    if b'Kancolle Staff Twitter' in rv.data:
         pass
     else:
         exit(1)

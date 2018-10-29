@@ -12,10 +12,10 @@ cache = Cache(app, config={'CACHE_TYPE': 'redis'})
 app.config['SECRET_KEY'] = os.urandom(24)
 
 # Twitter Developers API
-app.config['API_KEY'] = os.environ.get('API_KEY', None)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', None)
-app.config['ACCESS_TOKEN'] = os.environ.get('ACCESS_TOKEN', None)
-app.config['TOKEN_SECRET'] = os.environ.get('TOKEN_SECRET', None)
+app.config['TWITTER_API_KEY'] = os.environ.get('TWITTER_API_KEY', None)
+app.config['TWITTER_SECRET_KEY'] = os.environ.get('TWITTER_SECRET_KEY', None)
+app.config['TWITTER_ACCESS_TOKEN'] = os.environ.get('TWITTER_ACCESS_TOKEN', None)
+app.config['TWITTER_TOKEN_SECRET'] = os.environ.get('TWITTER_TOKEN_SECRET', None)
 
 
 # Minify HTML

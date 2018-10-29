@@ -1,6 +1,7 @@
 ![Header](https://raw.githubusercontent.com/EnderQIU/ooi3-remastered/master/static/img/logo.png)
 # OOI v3 Remastered
 [![CircleCI](https://circleci.com/gh/EnderQIU/ooi3-remastered/tree/master.svg?style=svg)](https://circleci.com/gh/EnderQIU/ooi3-remastered/tree/master)
+[![HitCount](http://hits.dwyl.io/EnderQIU/ooi3-remastered.svg)](http://hits.dwyl.io/EnderQIU/ooi3-remastered)
 
 
 > Online Objects Integration (OOI) system based on flask & requests.
@@ -29,7 +30,7 @@ Portion of this software may utilize the following copyrighted materials, the us
 
 - [xterm.js](https://xtermjs.org) MIT License
 - [acgx/ooi3](https://github.com/acgx/ooi3) GPLv3 License
-- [Ajax-hook](https://github.com/wendux/Ajax-hook)
+- [js-mobile-console](https://github.com/B1naryStudio/js-mobile-console) MIT License
 
 ## License
 GPLv3 License

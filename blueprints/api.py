@@ -16,8 +16,21 @@ api_bp = Blueprint('api', __name__)
 
 @api_bp.route('/kcs/resources/image/world/<string:img_name>.png', methods=('GET', ))
 def world_image(img_name):
-    """ 显示正确的镇守府图片。
-    舰娘游戏中客户端FLASH请求的镇守府图片是根据FLASH本身的URL生成的，需要根据用户所在的镇守府IP为其显示正确的图片。
+    """ Get the jinjufu image
+    // main.js?version=4.2.1.0:formatted @line:12188
+    e.prototype._getKeyName = function() {
+        var t = location.hostname;
+        if (t.match(/\./)) {
+            for (var e = t.split("."), i = 0; i < e.length; i++) e[i] = ("00" + e[i]).slice(-3);
+            return e.join("_")
+        }
+        return t
+    }, e.prototype._getPath = function(t) {
+        var e = this._getKeyName();
+        return "title" == t ? o.default.settings.path_root + "resources/world/" + e + "_t.png" : "small" == t ? o.default.settings.path_root + "resources/world/" + e + "_s.png" : "large" == t ? o.default.settings.path_root + "resources/world/" + e + "_l.png" : void 0
+    }
+    // end of main.js
+
     :param : img_name
     :return:
     """
@@ -29,7 +42,7 @@ def world_image(img_name):
     world_ip = session.get('world_ip', None)
     if world_ip:
         ip_sections = map(int, world_ip.split('.'))
-        image_name = '_'.join([format(x, '03') for x in ip_sections]) + '_' + img_name[-1]
+        image_name = '_'.join([format(x, '00') for x in ip_sections]) + '_' + img_name[-1]
         if image_name in worlds:
             body = worlds[image_name]
         else:

@@ -57,15 +57,20 @@ class CachedStaticResponse(Response):
         super().__init__()
         assert isinstance(key, str) and not key.startswith('/')
 
-        resp, header = get_cached_static_file(key)
+        # Invalidate cache and retry once if cache error
+        try:
+            resp, headers = get_cached_static_file(key)
+        except ValueError:  # Normally happened when modified the return value of get_cached_static_file(key)
+            cache.delete_memoized(get_cached_static_file, key)
+            resp, headers = get_cached_static_file(key)
 
-        # Disable invalid cache
+        # Delete invalid cache
         if not resp.ok:
             cache.delete_memoized(get_cached_static_file, key)
 
         self.data = resp.content
         self.status_code = resp.status_code
-        self.headers = header  # These headers are processed, do not use the resp.header.
+        self.headers = headers  # These headers are processed, do not use the resp.header.
 
 
 class NonCachedStaticResponse(Response):

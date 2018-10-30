@@ -3,7 +3,7 @@ import json
 
 import click
 import requests
-from flask import Response, render_template
+from flask import Response, render_template, abort
 from requests import Timeout
 from htmlmin.main import minify
 
@@ -33,20 +33,20 @@ class JsonResponse(Response):
         self.mimetype = 'text/json'
 
 
-@cache.memoize(259200)
+@cache.memoize(259200)  # 30 Days
 def get_cached_static_file(key):
     try:
         resp = requests.get(
             url=config.upstream + key,
             allow_redirects=False)
     except Timeout:
-        return Response(status=504)
+        return abort(BadResponse("Connection Timeout for url: {}".format(key)))
 
     excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
     headers = [(name, value) for (name, value) in resp.raw.headers.items()
                if name.lower() not in excluded_headers]
 
-    return resp.content, resp.status_code, headers
+    return resp, headers
 
 
 class CachedStaticResponse(Response):
@@ -57,10 +57,15 @@ class CachedStaticResponse(Response):
         super().__init__()
         assert isinstance(key, str) and not key.startswith('/')
 
-        cont, stat, header = get_cached_static_file(key)
-        self.data = cont
-        self.status_code = stat
-        self.headers = header
+        resp, header = get_cached_static_file(key)
+
+        # Disable invalid cache
+        if not resp.ok:
+            cache.delete_memoized(get_cached_static_file, key)
+
+        self.data = resp.content
+        self.status_code = resp.status_code
+        self.headers = header  # These headers are processed, do not use the resp.header.
 
 
 class NonCachedStaticResponse(Response):
@@ -96,7 +101,6 @@ def render_minify_template(template_name_or_list, **context):
     Use this method will minify the templates when 'ENV' is set 'to production'
      or the 'enable_minify' parameter is set to True
     :param template_name_or_list:
-    :param enable_minify: whether to minify the rendered templates
     :param context:
     :return:
     """

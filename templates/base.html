@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- META -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport"
@@ -10,25 +11,30 @@
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon">
     <link href="{{ url_for("static", filename="img/logo.png") }}" sizes="128x128"
           rel="apple-touch-icon-precomposed">
+    <!-- /META -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
     {% if config.ENV == 'production' %}
-        <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-99600152-2"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
+
             function gtag() {
                 dataLayer.push(arguments);
             }
+
             gtag('js', new Date());
             gtag('config', 'UA-99600152-2');
         </script>
     {% endif %}
+    <!-- /Global site tag (gtag.js) - Google Analytics -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/vendor/uikit/uikit.min.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/vendor/uikit/uikit.almost-flat.min.css") }}">
     {% assets "base_css" %}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
     {% block extra_css %}{% endblock %}
-    {% assets "base_js" %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
+    <!-- /CSS -->
 </head>
 <body>
 <div id="ooi-page" class="uk-container uk-container-center">
@@ -60,6 +66,13 @@
         <address><a href="https://weibo.com/u/2342802381" target="_blank">新中華妖西門陣@ブイン基地</a> &copy; 2018</address>
     </div>
 </div>
+<!-- JS -->
+<script type="text/javascript" src="{{ url_for("static", filename="js/vendor/jquery/jquery-3.3.1.min.js") }}"></script>
+<script type="text/javascript" src="{{ url_for("static", filename="js/vendor/uikit/uikit.min.js") }}"></script>
+{% assets "base_js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
 {% block extra_js %}{% endblock %}
+<!-- /JS -->
 </body>
 </html>

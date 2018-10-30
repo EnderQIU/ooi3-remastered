@@ -21,7 +21,14 @@ def test_index(client):
     """
 
     rv = client.get('/')
-    if b'Kancolle Staff Twitter' in rv.data:
-        pass
-    else:
-        exit(1)
+    assert b'Kancolle Staff Twitter' in rv.data, 'index test failed'
+
+
+def test_twitter(client):
+    """
+    Test the twitter api
+    :param client:
+    :return:
+    """
+    rv = client.get('/ooiapi/twitter')
+    assert b'ok' in rv.data, 'twitter api test failed'

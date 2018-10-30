@@ -1,6 +1,7 @@
 ![Header](https://raw.githubusercontent.com/EnderQIU/ooi3-remastered/master/static/img/logo.png)
 # OOI v3 Remastered
 [![Build Status](https://travis-ci.com/EnderQIU/ooi3-remastered.svg?branch=master)](https://travis-ci.com/EnderQIU/ooi3-remastered)
+[![codebeat badge](https://codebeat.co/badges/e4b446e6-34d6-4b85-9422-eb968abe3ae0)](https://codebeat.co/projects/github-com-enderqiu-ooi3-remastered-master)
 [![HitCount](http://hits.dwyl.io/EnderQIU/ooi3-remastered.svg)](http://hits.dwyl.io/EnderQIU/ooi3-remastered)
 
 

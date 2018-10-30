@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    {% assets "js-mobile-console_js" %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-    {% assets "js-mobile-console_css" %}
-        <link rel="stylesheet" href="{{ ASSET_URL }}">
-    {% endassets %}
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/vendor/js-mobile-console/mobile-console.min.css") }}">
 </head>
 <body background="{{ url_for("static", filename="img/game.png") }}">
+<script type="text/javascript" src="{{ url_for("static", filename="js/vendor/axios/axios.min.js") }}"></script>
+<script type="text/javascript" src="{{ url_for("static", filename="js/vendor/js-mobile-console/mobile-console.min.js") }}"></script>
 <script>
     mobileConsole.show();
 </script>

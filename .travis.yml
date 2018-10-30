@@ -8,6 +8,8 @@ branches:
 python:
   - "3.6"
 
+cache: pip
+
 services:
   - redis-server
 

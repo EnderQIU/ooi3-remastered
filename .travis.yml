@@ -1,0 +1,20 @@
+language: python
+
+branches:
+  only:
+  - master
+  - develop
+
+python:
+  - "3.6"
+
+cache: pip
+
+services:
+  - redis-server
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - pytest

@@ -8,17 +8,18 @@
 > Online Objects Integration (OOI) system based on flask & requests.
 
 ## Features
-1. Updated various of python packages.
-2. Flask-caching static files with redis.
-3. HTTPS Supported.
-4. Running in 2nd Sequence (HTML5 game mode).
-5. Embedded kancolle staff twitter off-canvas.
+1. Flask-caching static files with redis.
+2. HTTPS Supported.
+3. Running in 2nd Sequence (HTML5 game mode).
+4. Embedded kancolle staff twitter off-canvas.
+5. **Cross-platform kancolle assistant that only requires a modern browser.**
+No framework, no app and no plugin needs to be downloaded!
 
 ## Demo Website
 You can visit this [demo website](https://ooi.enderqiu.cn/) to preview all features (HTTPS supported).
-Please notice that the demo website is **only** used for previewing of features. We highly recommend 
-you deploy this site on the VPS owned by yourself with HTTPS if you are worried about some security 
-problems.
+Please notice that the demo website is **only** used for previewing of features though we don't collect
+any data on the backend. We highly recommend you deploy this site on the VPS owned by yourself with 
+HTTPS if you are worried about some security problems.
 
 ## Browser Support
 

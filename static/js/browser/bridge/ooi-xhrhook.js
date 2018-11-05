@@ -47,20 +47,22 @@ document.getElementById('htmlWrap').onload = function () {
     // Add a request interceptor
     window.frames[0].axios.interceptors.request.use(function (config) {
         // Do something before request is sent
-        $("#ooi-trigger").trigger('beforeXhrSend', config);
+        $("#ooi-trigger").trigger('beforeSend', config);
         return config;
     }, function (error) {
         // Do something with request error
+        $("#ooi-trigger").trigger('beforeRequestReject', error);
         return Promise.reject(error);
     });
 
     // Add a response interceptor
     window.frames[0].axios.interceptors.response.use(function (response) {
         // Do something with response data
-        $("#ooi-trigger").trigger('onXhrReceive', response);
+        $("#ooi-trigger").trigger('onReceive', response);
         return response;
     }, function (error) {
         // Do something with response error
+        $("#ooi-trigger").trigger('beforeResponseReject', error);
         return Promise.reject(error);
     });
 

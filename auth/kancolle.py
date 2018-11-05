@@ -226,7 +226,8 @@ class KancolleAuth:
             self.world_id = svdata['api_data']['api_world_id']
             self.world_ip = self.world_ip_list[self.world_id-1]
         else:
-            raise OOIAuthException('Server error when looking for Jinjufu. Maybe the official sever is under maintaince.')
+            raise OOIAuthException('Server error when looking for Jinjufu. Maybe the official sever is under '
+                                   'maintaince.')
 
         return self.world_id, self.world_ip, self.st
 
@@ -250,7 +251,8 @@ class KancolleAuth:
         response = self._request(self.urls['make_request'],
                                  method='POST',
                                  data=data,
-                                 timeout_message='Connection timeout when requesting token for entering the Jinjufu. Maybe the official sever is under maintaince.')
+                                 timeout_message='Connection timeout when requesting token for entering the Jinjufu. '
+                                                 'Maybe the official sever is under maintaince.')
         html = response.text
         svdata = json.loads(html[27:])
         if svdata[url]['rc'] != 200:

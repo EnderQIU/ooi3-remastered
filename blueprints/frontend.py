@@ -33,7 +33,7 @@ def debug_login(login_id, password, mode):
     :return:
     """
     if login_id and password:
-        if mode in (1, 2, 3):
+        if mode in (1, 2, 3, 5):
             # kancolle_auth = KancolleAuth(login_id, password)
             try:
                 # kancolle_auth.get_entry()
@@ -44,6 +44,8 @@ def debug_login(login_id, password, mode):
                     return redirect('/kcv')
                 elif mode == 3:
                     return redirect('/poi')
+                elif mode == 5:
+                    return redirect('/ios')
                 else:
                     return redirect('/browser')
             except OOIAuthException as e:
@@ -84,7 +86,7 @@ def login():
 
     if login_id and password:
         kancolle_auth = KancolleAuth(login_id, password)
-        if mode in (1, 2, 3):
+        if mode in (1, 2, 3, 5):
             try:
                 kancolle_auth.get_entry()
                 session['api_token'] = kancolle_auth.api_token
@@ -94,6 +96,8 @@ def login():
                     return redirect('/kcv')
                 elif mode == 3:
                     return redirect('/poi')
+                elif mode == 5:
+                    return redirect('/ios')
                 else:
                     return redirect('/browser')
             except OOIAuthException as e:
@@ -316,6 +320,50 @@ def connector():
     if osapi_url:
         context = {'osapi_url': osapi_url}
         return render_minify_template('connector.html', **context)
+    else:
+        session.clear()
+        return redirect('/')
+
+
+def debug_ios():
+    """
+    ios app full screen page for local debug
+    :return:
+    """
+    token = session.get('api_token', None)
+    starttime = session.get('api_starttime', None)
+    world_ip = session.get('world_ip', None)
+    if token and starttime and world_ip:
+        context = {'scheme': request.scheme,
+                   'host': request.host + '/js_mobile_console?realSrc=',
+                   'token': token,
+                   'starttime': starttime,
+                   'local_debug': 'yes',
+                   }
+        return render_minify_template('ios.html', **context)
+    else:
+        session.clear()
+        return redirect('/')
+
+
+@frontend_bp.route('/ios', methods=('GET',))
+def ios():
+    """
+    ios app full screen page
+    :return: rv
+    """
+    if app.config['ENV'] == 'development' and session.get('test_mode', False):
+        return debug_ios()
+
+    token = session.get('api_token', None)
+    starttime = session.get('api_starttime', None)
+    world_ip = session.get('world_ip', None)
+    if token and starttime and world_ip:
+        context = {'scheme': request.scheme,
+                   'host': request.host,
+                   'token': token,
+                   'starttime': starttime}
+        return render_minify_template('ios.html', **context)
     else:
         session.clear()
         return redirect('/')

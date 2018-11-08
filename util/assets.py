@@ -61,4 +61,17 @@ bundles = {
         output='dist/poi.css',
         filters='cssmin',
     ),
+    # ios.html
+    'ios_js': Bundle(
+        'js/browser/bridge/ooi-xhrhook.js',
+        'js/ios/ooi-iosjsbridge.js',
+        'js/ios/ooi-iosfullscreen.js',
+        output='dist/ios.js',
+        filters='jsmin',
+    ),
+    'ios_css': Bundle(
+        'css/ios/ooi-ios.css',
+        output='dist/ios.css',
+        filters='cssmin',
+    ),
 }

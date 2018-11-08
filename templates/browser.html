@@ -22,7 +22,7 @@
         </button>
     </div>
     <div id="ooi-game" class="uk-align-center">
-        <canvas id="ooi-assistant" style="visibility: hidden"></canvas>
+        <canvas id="ooi-assistant" style="width: 0; height: 0; margin: 0 0 0 0; visibility: hidden"></canvas>
         <iframe src="{{ scheme }}://{{ host }}/kcs2/index.php?api_root=/kcsapi&amp;voice_root=/kcs/sound&amp;osapi_root=osapi.dmm.com&amp;version={{ config.API_VERSION }}&amp;api_token={{ token }}&amp;api_starttime={{ starttime }}"
                 id="htmlWrap" scrolling="no" frameborder="0" allowfullscreen
                 style="width: 1200px; height: 720px; margin: 0 0 0 0;"></iframe>

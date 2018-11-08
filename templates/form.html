@@ -66,6 +66,14 @@
                         <span class="uk-badge uk-badge-success">ver: newest</span>
                     </label>
                 </p>
+                {% if config.ENV == 'development' %}
+                    <p>
+                        <input type="radio" id="mode5" name="mode" value="5"{% if mode == 5 %} checked{% endif %}>
+                        <label for="mode5">iOS&nbsp;
+                            <span class="uk-badge uk-badge-danger">Debug Only</span>
+                        </label>
+                    </p>
+                {% endif %}
             </div>
             {% if config.ENV == 'development' %}
                 <div class="uk-form-row">
@@ -100,7 +108,7 @@
     </div>
     <div id="ooi-kancolle-staff-tweets" class="uk-offcanvas">
         <div class="uk-offcanvas-bar uk-offcanvas-bar-flip">
-            <div id= "kancolle-staff-tweets-list" class="uk-container" style="padding: 0">
+            <div id="kancolle-staff-tweets-list" class="uk-container" style="padding: 0">
                 <div id="loading" class="uk-container uk-container-center">
                     <i class="uk-icon-refresh uk-icon-spin"></i><strong> Loading...</strong>
                 </div>

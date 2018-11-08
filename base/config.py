@@ -9,4 +9,4 @@ proxies = {
 # static files upstream server
 upstream = 'http://203.104.209.102/'
 
-assert upstream.endswith('/'), 'config.upstream must ends with slash.'
+assert upstream.endswith('/'), 'config.upstream must end with a slash.'

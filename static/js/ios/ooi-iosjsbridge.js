@@ -14,13 +14,13 @@ function isWebKit() {
 }
 
 function SwiftJSBridgeInject() {
-    console.log("SwiftJSBridgeInject")
+    console.log("SwiftJSBridgeInject");
     if (isWebKit()) {
         window.webkit.messageHandlers.SwiftJSBridgeInject.postMessage("SwiftJSBridgeInject")
     } else {
         var src = "https://SwiftJSBridgeInject/" + Math.random()
-        var req = new XMLHttpRequest
-        req.open("GET", src)
+        var req = new XMLHttpRequest;
+        req.open("GET", src);
         req.send()
     }
 }
@@ -34,15 +34,15 @@ setupSwiftJSBridge(function (bridge) {
         log('Native called sendMessageToJS with', data)
         var responseData = {message: 'Hi, I am JS'}
         log('JS responding with', responseData)
+        // register axios listener
+        let trigger = $("#ooi-trigger");
+        trigger.on('onXhrReceive', function (event, response) {
+            SwiftJSBridge.callNativeBridge("webViewFinishedLoading", {"data": response}, function (data) {
+                console.log("callback");
+                console.log(data)
+            })
+        });
+        // resp callback
         responseCallback(responseData)
     })
 })
-
-function test() {
-
-    SwiftJSBridge.callNativeBridge("getAppVersion", {"data": "v1"}, function (data) {
-        console.log("callback")
-        console.log(data)
-    })
-
-}

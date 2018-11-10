@@ -84,6 +84,9 @@ def login():
     if app.config['ENV'] == 'development' and test_mode:
         return debug_login(login_id, password, mode)
 
+    if mode == 5 and test_mode:  # enable test mode in ios mode even in production environment
+        return debug_login(login_id, password, mode)
+
     if login_id and password:
         kancolle_auth = KancolleAuth(login_id, password)
         if mode in (1, 2, 3, 5):

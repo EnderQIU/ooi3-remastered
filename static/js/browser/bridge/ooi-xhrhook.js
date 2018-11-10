@@ -57,7 +57,7 @@ document.getElementById('htmlWrap').onload = function () {
 
     // Add a response interceptor
     window.frames[0].axios.interceptors.response.use(function (response) {
-        // Do something with response data
+        //         // Do something with response data
         $("#ooi-trigger").trigger('onReceive', response);
         return response;
     }, function (error) {

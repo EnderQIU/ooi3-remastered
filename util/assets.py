@@ -63,9 +63,9 @@ bundles = {
     ),
     # ios.html
     'ios_js': Bundle(
-        'js/browser/bridge/ooi-xhrhook.js',
         'js/ios/ooi-iosjsbridge.js',
         'js/ios/ooi-iosfullscreen.js',
+        'js/ios/main.js',
         output='dist/ios.js',
         filters='jsmin',
     ),

@@ -26,6 +26,7 @@ else:
     app.config['ENABLE_MINIFY'] = False
 
 # Web Assets Debug
+# If set to True, js and css will be loaded separated, else them will be spliced to one file in order
 app.config['ASSETS_DEBUG'] = os.environ.get('ASSETS_DEBUG', False)
 if app.config['ASSETS_DEBUG'] == 'yes' or app.config['ENV'] == 'development':
     app.config['ASSETS_DEBUG'] = True

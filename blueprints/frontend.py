@@ -358,6 +358,10 @@ def ios():
     if app.config['ENV'] == 'development' and session.get('test_mode', False):
         return debug_ios()
 
+    # enable test mode in ios mode even in production environment
+    if session.get('mode', None) == 5 and session.get('test_mode', False):
+        return debug_ios()
+
     token = session.get('api_token', None)
     starttime = session.get('api_starttime', None)
     world_ip = session.get('world_ip', None)

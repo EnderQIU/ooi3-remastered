@@ -10,13 +10,26 @@ from base.response import BadResponse
 from app import cache
 
 api_start2 = None
-worlds = {}
 
 api_bp = Blueprint('api', __name__)
 
 
 @cache.memoize(259200)  # 30 days
-@api_bp.route('/kcs/resources/image/world/<string:img_name>.png', methods=('GET', ))
+def get_chijufu_image(world_ip, image_name):
+    """
+    Get Chinju-fu image and cache for 30 days
+    :param world_ip: e.g. 203.104.209.71
+    :param image_name: e.g. ooi_qiu_0cn_t
+    :return:
+    """
+    s = requests.Session()
+    s.proxies = config.proxies
+    s.timeout = 5
+    url = 'http://' + world_ip + '/kcs2/resources/world/' + image_name + '.png'
+    return s.get(url=url)
+
+
+@api_bp.route('/kcs2/resources/world/<string:img_name>.png', methods=('GET', ))
 def world_image(img_name):
     """ Get the Chinju-fu image
     // main.js?version=4.2.1.0:formatted @line:12188
@@ -29,18 +42,15 @@ def world_image(img_name):
         return t
     }, e.prototype._getPath = function(t) {
         var e = this._getKeyName();
-        return "title" == t ? o.default.settings.path_root + "resources/world/" + e + "_t.png" : "small" == t ? o.default.settings.path_root + "resources/world/" + e + "_s.png" : "large" == t ? o.default.settings.path_root + "resources/world/" + e + "_l.png" : void 0
+        return "title" == t ? o.default.settings.path_root + "resources/world/" + e + "_t.png" : "small" == t ?
+         o.default.settings.path_root + "resources/world/" + e + "_s.png" : "large" == t ?
+          o.default.settings.path_root + "resources/world/" + e + "_l.png" : void 0
     }
     // end of main.js
 
     :param : img_name
     :return:
     """
-
-    s = requests.Session()
-    s.proxies = config.proxies
-    s.timeout = 5
-
     world_ip = session.get('world_ip', None)
     if world_ip:
         image_name = ""
@@ -48,13 +58,12 @@ def world_image(img_name):
             extra_zero = 3 - len(ip_sec)
             image_name += extra_zero * '0' + ip_sec + '_'
         image_name += img_name[-1]
-        url = 'http://' + world_ip + '/kcs/resources/image/world/' + image_name + '.png'
-        try:
-            response = s.get(url=url)
-        except requests.exceptions.Timeout:
-            return BadResponse('Request for Chinju-fu image timeout.')
+
+        response = get_chijufu_image(world_ip, image_name)
+        if not response.ok:
+            cache.delete_memoized(get_chijufu_image, world_ip, image_name)
+
         body = response.content
-        worlds[image_name] = body
         return Response(body, headers={'Content-Type': 'image/png', 'Cache-Control': 'no-cache'})
     else:
         return BadResponse('world_ip not set.')

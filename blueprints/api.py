@@ -7,7 +7,6 @@ from flask import Response, Blueprint, session, request
 
 from base import config
 from base.response import BadResponse
-from app import cache
 
 api_start2 = None
 worlds = {}
@@ -15,8 +14,7 @@ worlds = {}
 api_bp = Blueprint('api', __name__)
 
 
-@cache.memoize(259200)  # 30 days
-@api_bp.route('/kcs/resources/image/world/<string:img_name>.png', methods=('GET', ))
+@api_bp.route('/kcs2/resources/world/<string:img_name>.png', methods=('GET', ))
 def world_image(img_name):
     """ Get the Chinju-fu image
     // main.js?version=4.2.1.0:formatted @line:12188
@@ -29,7 +27,9 @@ def world_image(img_name):
         return t
     }, e.prototype._getPath = function(t) {
         var e = this._getKeyName();
-        return "title" == t ? o.default.settings.path_root + "resources/world/" + e + "_t.png" : "small" == t ? o.default.settings.path_root + "resources/world/" + e + "_s.png" : "large" == t ? o.default.settings.path_root + "resources/world/" + e + "_l.png" : void 0
+        return "title" == t ? o.default.settings.path_root + "resources/world/" + e + "_t.png" : "small" == t ?
+         o.default.settings.path_root + "resources/world/" + e + "_s.png" : "large" == t ?
+          o.default.settings.path_root + "resources/world/" + e + "_l.png" : void 0
     }
     // end of main.js
 
@@ -48,7 +48,7 @@ def world_image(img_name):
             extra_zero = 3 - len(ip_sec)
             image_name += extra_zero * '0' + ip_sec + '_'
         image_name += img_name[-1]
-        url = 'http://' + world_ip + '/kcs/resources/image/world/' + image_name + '.png'
+        url = 'http://' + world_ip + '/kcs2/resources/world/' + image_name + '.png'
         try:
             response = s.get(url=url)
         except requests.exceptions.Timeout:

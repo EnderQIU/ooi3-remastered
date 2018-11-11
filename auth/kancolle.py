@@ -30,7 +30,7 @@ class KancolleAuth:
                      '&api_token=%s'
                      '&api_starttime=%d'.format(api_version=app.config['API_VERSION'])}
 
-    # 各镇守府的IP列表
+    # http://kancolle.wikia.com/wiki/Servers
     world_ip_list = (
         "203.104.209.71",
         "203.104.209.87",
@@ -219,14 +219,14 @@ class KancolleAuth:
         self.st = qs['st'][0]
         url = self.urls['get_world'] % (self.owner, int(time.time()*1000))
         self.session.headers['Referer'] = self.osapi_url
-        response = self._request(url, timeout_message='Connection timeout when looking for Jinjufu.')
+        response = self._request(url, timeout_message='Connection timeout when looking for Chinju-fu.')
         html = response.text
         svdata = json.loads(html[7:])
         if svdata['api_result'] == 1:
             self.world_id = svdata['api_data']['api_world_id']
             self.world_ip = self.world_ip_list[self.world_id-1]
         else:
-            raise OOIAuthException('Server error when looking for Jinjufu. Maybe the official sever is under '
+            raise OOIAuthException('Server error when looking for Chinju-fu. Maybe the official sever is under '
                                    'maintaince.')
 
         return self.world_id, self.world_ip, self.st
@@ -251,15 +251,15 @@ class KancolleAuth:
         response = self._request(self.urls['make_request'],
                                  method='POST',
                                  data=data,
-                                 timeout_message='Connection timeout when requesting token for entering the Jinjufu. '
+                                 timeout_message='Connection timeout when requesting token for entering the Chinju-fu. '
                                                  'Maybe the official sever is under maintaince.')
         html = response.text
         svdata = json.loads(html[27:])
         if svdata[url]['rc'] != 200:
-            raise OOIAuthException('Server error when parsing token for entering the Jinjufu.')
+            raise OOIAuthException('Server error when parsing token for entering the Chinju-fu.')
         svdata = json.loads(svdata[url]['body'][7:])
         if svdata['api_result'] != 1:
-            raise OOIAuthException('Server error when parsing token for entering the Jinjufu.')
+            raise OOIAuthException('Server error when parsing token for entering the Chinju-fu.')
         self.api_token = svdata['api_token']
         self.api_starttime = svdata['api_starttime']
         self.entry = self.urls['entry'] % (self.world_ip, self.api_token, self.api_starttime)

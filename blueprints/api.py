@@ -7,6 +7,7 @@ from flask import Response, Blueprint, session, request
 
 from base import config
 from base.response import BadResponse
+from app import cache
 
 api_start2 = None
 worlds = {}
@@ -14,9 +15,10 @@ worlds = {}
 api_bp = Blueprint('api', __name__)
 
 
+@cache.memoize(259200)  # 30 days
 @api_bp.route('/kcs/resources/image/world/<string:img_name>.png', methods=('GET', ))
 def world_image(img_name):
-    """ Get the jinjufu image
+    """ Get the Chinju-fu image
     // main.js?version=4.2.1.0:formatted @line:12188
     e.prototype._getKeyName = function() {
         var t = location.hostname;
@@ -41,18 +43,18 @@ def world_image(img_name):
 
     world_ip = session.get('world_ip', None)
     if world_ip:
-        ip_sections = map(int, world_ip.split('.'))
-        image_name = '_'.join([format(x, '00') for x in ip_sections]) + '_' + img_name[-1]
-        if image_name in worlds:
-            body = worlds[image_name]
-        else:
-            url = 'http://203.104.209.102/kcs/resources/image/world/' + image_name + '.png'
-            try:
-                response = s.get(url=url)
-            except requests.exceptions.Timeout:
-                return BadResponse('Request for jinjufu image timeout.')
-            body = response.content
-            worlds[image_name] = body
+        image_name = ""
+        for ip_sec in world_ip.split('.'):
+            extra_zero = 3 - len(ip_sec)
+            image_name += extra_zero * '0' + ip_sec + '_'
+        image_name += img_name[-1]
+        url = 'http://' + world_ip + '/kcs/resources/image/world/' + image_name + '.png'
+        try:
+            response = s.get(url=url)
+        except requests.exceptions.Timeout:
+            return BadResponse('Request for Chinju-fu image timeout.')
+        body = response.content
+        worlds[image_name] = body
         return Response(body, headers={'Content-Type': 'image/png', 'Cache-Control': 'no-cache'})
     else:
         return BadResponse('world_ip not set.')

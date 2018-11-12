@@ -338,7 +338,7 @@ def debug_ios():
     world_ip = session.get('world_ip', None)
     if token and starttime and world_ip:
         context = {'scheme': request.scheme,
-                   'host': request.host + '/js_mobile_console?realSrc=',
+                   'host': 'enderqiu.github.io/tmpltr/' + '?realSrc=',
                    'token': token,
                    'starttime': starttime,
                    'local_debug': 'yes',

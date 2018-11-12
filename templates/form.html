@@ -66,11 +66,11 @@
                         <span class="uk-badge uk-badge-success">ver: newest</span>
                     </label>
                 </p>
-                {% if config.ENV == 'development' %}
+                {% if config.ENV == 'development' or mode == 5 %}
                     <p>
                         <input type="radio" id="mode5" name="mode" value="5"{% if mode == 5 %} checked{% endif %}>
                         <label for="mode5">iOS&nbsp;
-                            <span class="uk-badge uk-badge-danger">Debug Only</span>
+                            <span class="uk-badge uk-badge-danger">iOS Only</span>
                         </label>
                     </p>
                 {% endif %}

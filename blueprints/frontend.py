@@ -343,7 +343,7 @@ def debug_ios():
                    'starttime': starttime,
                    'local_debug': 'yes',
                    }
-        return render_minify_template('ios.html', **context)
+        return render_minify_template('js_mobile_console.html', **context)
     else:
         session.clear()
         return redirect('/')

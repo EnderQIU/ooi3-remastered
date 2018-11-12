@@ -338,12 +338,12 @@ def debug_ios():
     world_ip = session.get('world_ip', None)
     if token and starttime and world_ip:
         context = {'scheme': request.scheme,
-                   'host': 'enderqiu.github.io/tmpltr/' + '?realSrc=',
+                   'host': request.host + '/js_mobile_console?realSrc=',
                    'token': token,
                    'starttime': starttime,
                    'local_debug': 'yes',
                    }
-        return render_minify_template('ios.html', **context)
+        return render_minify_template('js_mobile_console.html', **context)
     else:
         session.clear()
         return redirect('/')

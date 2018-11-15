@@ -41,6 +41,20 @@ function sendXhrResponseToSwift(resp) {
                 }
             }
         }
+        else if (resp.request.responseURL.indexOf("/kcsapi/api_get_member/kdock") !== -1) {
+            // Create new ship notification
+            let data = resp2Json(resp);
+            for (let api_data of data.api_data) {
+                if (api_data.api_state > 0) {
+                    // -1: locked; 0: empty; 1: complete; 2: in use
+                    let interval = getCompleteIntervalFromAPIData(api_data, true);
+                    SetIntervalNotification("createship" + api_data.api_complete_time_str,
+                        interval,
+                        "New friend have arrived!",
+                        "新造艦が完成したみたいです");
+                }
+            }
+        }
     } catch (e) {
         console.log('Exception occurred when handling XHR response.')
     }

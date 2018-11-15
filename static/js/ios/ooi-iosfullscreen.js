@@ -1,6 +1,6 @@
 function setScale() {
     let scale = 1.0;
-    if (document.body.scrollWidth / document.body.scrollHeight < 1.67){
+    if (window.screen.width / window.screen.height < 1.67){
         // iPad
         scale = window.screen.height / 1200.0;
     }else{

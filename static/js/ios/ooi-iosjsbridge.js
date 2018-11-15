@@ -3,17 +3,11 @@ function resp2Json(resp) {
 }
 
 function getCompleteIntervalFromData(data, ahead) {
-    if (ahead)
-        return Math.floor((new Date(data.api_data.api_complatetime) - new Date()) / 1000) - 60;
-    else
-        return Math.floor((new Date(data.api_data.api_complatetime) - new Date()) / 1000);
+    return Math.floor((new Date(data.api_data.api_complatetime) - new Date()) / 1000);
 }
 
 function getCompleteIntervalFromAPIData(api_data, ahead) {
-    if (ahead)
-        return Math.floor((new Date(api_data.api_complete_time) - new Date()) / 1000) - 60;
-    else
-        return Math.floor((new Date(api_data.api_complete_time) - new Date()) / 1000);
+    return Math.floor((new Date(api_data.api_complete_time) - new Date()) / 1000);
 }
 
 function sendXhrResponseToSwift(resp) {

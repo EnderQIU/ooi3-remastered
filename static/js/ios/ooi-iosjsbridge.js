@@ -45,7 +45,7 @@ function sendXhrResponseToSwift(resp) {
             // Create new ship notification
             let data = resp2Json(resp);
             for (let api_data of data.api_data) {
-                if (api_data.api_state > 0) {
+                if (api_data.api_state === 2) {
                     // -1: locked; 0: empty; 1: complete; 2: in use
                     let interval = getCompleteIntervalFromAPIData(api_data, true);
                     SetIntervalNotification("createship" + api_data.api_complete_time_str,

@@ -4,6 +4,6 @@ function setScale() {
     viewport.setAttribute('content', 'width=device-width user-scalable=yes initial-scale=' + scale.toFixed(2));
 
     // center the iframe
-    let left = ($(window).width() - 1200) / 2;
-    $("#htmlWrap").style.marginLeft = left + 'px';
+    let left = (document.body.scrollWidth  - 1200) / 2;
+    document.getElementById('htmlWrap').style.marginLeft = left + 'px';
 }

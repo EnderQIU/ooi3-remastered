@@ -2,11 +2,11 @@ function resp2Json(resp) {
     return JSON.parse(resp.data.replace('svdata=', ''));
 }
 
-function getCompleteIntervalFromData(data, ahead) {
+function getCompleteIntervalFromData(data) {
     return Math.floor((new Date(data.api_data.api_complatetime) - new Date()) / 1000);
 }
 
-function getCompleteIntervalFromAPIData(api_data, ahead) {
+function getCompleteIntervalFromAPIData(api_data) {
     return Math.floor((new Date(api_data.api_complete_time) - new Date()) / 1000);
 }
 
@@ -19,7 +19,8 @@ function sendXhrResponseToSwift(resp) {
             SetIntervalNotification("expedition" + data.api_data.api_complatetime_str,
                 interval,
                 "Expedition accomplished!",
-                "遠征から戻って来ました");
+                "舰队、作戦终了です。お疲れ様でした。",
+                "sound/ooyodo/expedition_complete.caf");
         }
         else if (resp.request.responseURL.indexOf("/kcsapi/api_get_member/ndock") !== -1) {
             // Docking accomplishment notification
@@ -31,7 +32,8 @@ function sendXhrResponseToSwift(resp) {
                     SetIntervalNotification("docking" + api_data.api_complete_time_str,
                         interval,
                         "Docking completed!",
-                        "修理、完了なんです");
+                        "入渠中の舰の修理が完了しました。",
+                        "sound/ooyodo/docking_complete.caf");
                 }
             }
         }
@@ -45,7 +47,8 @@ function sendXhrResponseToSwift(resp) {
                     SetIntervalNotification("createship" + api_data.api_complete_time_str,
                         interval,
                         "New friend have arrived!",
-                        "新造艦が完成したみたいです");
+                        "新建造舰が完成致しました。",
+                        "sound/ooyodo/ship_complete.caf");
                 }
             }
         }
@@ -54,13 +57,14 @@ function sendXhrResponseToSwift(resp) {
     }
 }
 
-function SetIntervalNotification(identifier, interval, title, body) {
+function SetIntervalNotification(identifier, interval, title, body, soundName) {
     try {
         webkit.messageHandlers.timeIntervalNotificationTriggerHandler.postMessage({
             identifier: identifier,
             interval: interval,
             title: title,
-            body: body
+            body: body,
+            soundName: soundName
         })
     } catch (e) {
         console.log('The native context not exist.')

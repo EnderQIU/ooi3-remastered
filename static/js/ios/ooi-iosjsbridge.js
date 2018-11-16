@@ -20,7 +20,7 @@ function sendXhrResponseToSwift(resp) {
                 interval,
                 "Expedition accomplished!",
                 "舰队、作戦终了です。お疲れ様でした。",
-                "sound/ooyodo/expedition_complete.caf");
+                "ooyodo_expedition_complete.caf");
         }
         else if (resp.request.responseURL.indexOf("/kcsapi/api_get_member/ndock") !== -1) {
             // Docking accomplishment notification
@@ -33,7 +33,7 @@ function sendXhrResponseToSwift(resp) {
                         interval,
                         "Docking completed!",
                         "入渠中の舰の修理が完了しました。",
-                        "sound/ooyodo/docking_complete.caf");
+                        "ooyodo_docking_complete.caf");
                 }
             }
         }
@@ -48,7 +48,7 @@ function sendXhrResponseToSwift(resp) {
                         interval,
                         "New friend have arrived!",
                         "新建造舰が完成致しました。",
-                        "sound/ooyodo/ship_complete.caf");
+                        "ooyodo_ship_complete.caf");
                 }
             }
         }

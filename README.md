@@ -29,6 +29,9 @@ Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | No ✘ |
 
 - Full screen is not supported by Safari on iPhone but perform well on iPad.
 
+## iOS Client
+Get it on [My Tissue](https://github.com/EnderQIU/mytissue).
+
 ## Deployment
 See details in the [Wiki](https://github.com/EnderQIU/ooi3-remastered/wiki) page.
 

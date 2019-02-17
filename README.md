@@ -15,11 +15,11 @@
 5. **Cross-platform kancolle assistant that only requires a modern browser.**
 No framework, no app and no plugin needs to be downloaded!
 
-## Demo Website
+## ~~Demo Website
 You can visit this [demo website](https://ooi.enderqiu.cn/) to preview all features (HTTPS supported).
 Please notice that the demo website is **only** used for previewing of features though we don't collect
 any data on the backend. We highly recommend you deploy this site on the VPS owned by yourself with 
-HTTPS if you are worried about some security problems.
+HTTPS if you are worried about some security problems.~~
 
 ## Browser Support
 

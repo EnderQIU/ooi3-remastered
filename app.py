@@ -26,11 +26,11 @@ app.config['TWITTER_TOKEN_SECRET'] = config.get('tweets-optional', 'TWITTER_TOKE
 
 
 # Minify HTML
-app.config['ENABLE_MINIFY'] = config.get('debug-optional', 'ENABLE_MINIFY', fallback=False)
+app.config['ENABLE_MINIFY'] = config.getboolean('debug-optional', 'ENABLE_MINIFY', fallback=False)
 
 # Web Assets Debug
 # If set to True, js and css will be loaded separated, else them will be spliced to one file in order
-app.config['ASSETS_DEBUG'] = config.get('debug-optional', 'ASSETS_DEBUG', fallback=False)
+app.config['ASSETS_DEBUG'] = config.getboolean('debug-optional', 'ASSETS_DEBUG', fallback=False)
 
 # API version
 app.config['API_VERSION'] = config.get('required', 'API_VERSION', fallback='4.0.0.0')

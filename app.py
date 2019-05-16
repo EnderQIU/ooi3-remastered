@@ -13,7 +13,7 @@ cache = Cache(app, config={'CACHE_TYPE': 'redis'})
 app.config['SECRET_KEY'] = os.urandom(24)
 
 config = configparser.ConfigParser()
-if os.path.isfile(os.path.join(os.path.dirname(__file__), 'config.ini')):
+if not os.path.isfile(os.path.join(os.path.dirname(__file__), 'config.ini')):
     print('"config.ini" not found. Please get one from "config.example.ini".')
     exit(1)
 config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))

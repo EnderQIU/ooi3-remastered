@@ -1,6 +1,7 @@
 """OOI3: Online Objects Integration version 3.0 Remastered"""
 
 import os
+import configparser
 
 from flask import Flask
 from flask_assets import Environment
@@ -11,30 +12,28 @@ cache = Cache(app, config={'CACHE_TYPE': 'redis'})
 
 app.config['SECRET_KEY'] = os.urandom(24)
 
+config = configparser.ConfigParser()
+if os.path.isfile(os.path.join(os.path.dirname(__file__), 'config.ini')):
+    print('"config.ini" not found. Please get one from "config.example.ini".')
+    exit(1)
+config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
+
 # Twitter Developers API
-app.config['TWITTER_API_KEY'] = os.environ.get('TWITTER_API_KEY', None)
-app.config['TWITTER_SECRET_KEY'] = os.environ.get('TWITTER_SECRET_KEY', None)
-app.config['TWITTER_ACCESS_TOKEN'] = os.environ.get('TWITTER_ACCESS_TOKEN', None)
-app.config['TWITTER_TOKEN_SECRET'] = os.environ.get('TWITTER_TOKEN_SECRET', None)
+app.config['TWITTER_API_KEY'] = config.get('tweets-optional', 'TWITTER_API_KEY', fallback=None)
+app.config['TWITTER_SECRET_KEY'] = config.get('tweets-optional', 'TWITTER_SECRET_KEY', fallback=None)
+app.config['TWITTER_ACCESS_TOKEN'] = config.get('tweets-optional', 'TWITTER_ACCESS_TOKEN', fallback=None)
+app.config['TWITTER_TOKEN_SECRET'] = config.get('tweets-optional', 'TWITTER_TOKEN_SECRET', fallback=None)
 
 
 # Minify HTML
-app.config['ENABLE_MINIFY'] = os.environ.get('ENABLE_MINIFY', False)
-if app.config['ENABLE_MINIFY'] == 'yes':
-    app.config['ENABLE_MINIFY'] = True
-else:
-    app.config['ENABLE_MINIFY'] = False
+app.config['ENABLE_MINIFY'] = config.get('debug-optional', 'ENABLE_MINIFY', fallback=False)
 
 # Web Assets Debug
 # If set to True, js and css will be loaded separated, else them will be spliced to one file in order
-app.config['ASSETS_DEBUG'] = os.environ.get('ASSETS_DEBUG', False)
-if app.config['ASSETS_DEBUG'] == 'yes' or app.config['ENV'] == 'development':
-    app.config['ASSETS_DEBUG'] = True
-else:
-    app.config['ASSETS_DEBUG'] = False
+app.config['ASSETS_DEBUG'] = config.get('debug-optional', 'ASSETS_DEBUG', fallback=False)
 
 # API version
-app.config['API_VERSION'] = os.environ.get('API_VERSION')
+app.config['API_VERSION'] = config.get('required', 'API_VERSION', fallback='4.0.0.0')
 
 
 def register_blueprints():

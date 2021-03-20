@@ -13,7 +13,7 @@ Flask-Caching==1.4.0
 htmlmin==0.1.12
 idna==2.7
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==2.11.3
 jsmin==2.2.2
 kombu==4.2.1
 MarkupSafe==1.0
